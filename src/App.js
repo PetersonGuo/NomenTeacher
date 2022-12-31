@@ -15,8 +15,8 @@ export default function App() {
               <Route exact path='/' element={ <Navigate replace to="/home" /> }></Route>
               <Route exact path='/home' element={ <Home /> }></Route>
               <Route exact path='/quiz' element={ <Quiz /> }></Route>
-              <Route exact path='/material/mnbonds' element={ <MNBonds /> }></Route>
-              <Route exact path='/material/nnbonds' element={ <NNBonds /> }></Route>
+              <Route exact path='/mnbonds' element={ <MNBonds /> }></Route>
+              <Route exact path='/nnbonds' element={ <NNBonds /> }></Route>
           </Routes>
       </BrowserRouter>
   );

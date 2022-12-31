@@ -13,9 +13,9 @@ export default function MyNav() {
                     <Nav className="me-auto">
                         <Nav.Link href="home">Home</Nav.Link>
                         <Nav.Link href="quiz">Quizzing Tool</Nav.Link>
-                        <NavDropdown title="Study Materials" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="material/mnbonds">Metal Non-Metal Bonds</NavDropdown.Item>
-                            <NavDropdown.Item href="material/nnbonds">Non-Metal Non-Metal Bonds</NavDropdown.Item>
+                        <NavDropdown title="Study Material" id="basic-nav-dropdown">
+                            <NavDropdown.Item href="mnbonds">Metal Non-Metal Bonds</NavDropdown.Item>
+                            <NavDropdown.Item href="nnbonds">Non-Metal Non-Metal Bonds</NavDropdown.Item>
                             {/*<NavDropdown.Divider />*/}
                             {/*<NavDropdown.Item href="#action/3.4">*/}
                             {/*    Separated link*/}
