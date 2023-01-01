@@ -1,6 +1,5 @@
-import logo from './logo.svg';
 import './App.css';
-import MyNav from "./components/Navbar";
+import MyNav from "./components/MyNav";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from "./components/pages/Home";
 import Quiz from "./components/pages/Quiz";
