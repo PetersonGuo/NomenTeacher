@@ -4,7 +4,11 @@ import Answer from "./Answer";
 export default function Question(props) {
     const answersElement = props.question.answers.map(a => {
         return (
-            <Answer answer={a.answer} isRight={a.isRight} answered={props.answered} setAnswered={props.setAnswered}/>
+            <div>
+                <Answer answer={a.answer} isRight={a.isRight} answered={props.answered} setAnswered={props.setAnswered}/>
+                <br/>
+            </div>
+
         )
     });
     console.log(props.question)
@@ -12,6 +16,7 @@ export default function Question(props) {
         <div>
             {props.question.question === "" ? "" : <section>
                 {props.question.question}
+                <br/>
                 {answersElement}
             </section>}
         </div>

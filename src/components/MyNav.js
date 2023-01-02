@@ -14,8 +14,8 @@ export default function MyNav() {
                         <Nav.Link href="home">Home</Nav.Link>
                         <Nav.Link href="quiz">Quizzing Tool</Nav.Link>
                         <NavDropdown title="Study Material" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="mnbonds">Metal Non-Metal Bonds</NavDropdown.Item>
-                            <NavDropdown.Item href="nnbonds">Non-Metal Non-Metal Bonds</NavDropdown.Item>
+                            <NavDropdown.Item href="ionic-bonds">Ionic Bonds</NavDropdown.Item>
+                            <NavDropdown.Item href="covalent-bonds">Covalent Bonds</NavDropdown.Item>
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>

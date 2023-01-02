@@ -71,7 +71,7 @@ export default function Quiz() {
 
 
     return (
-        <div className="quiz-container">
+        <div>
             <Offcanvas show={showSettings} onHide={() => setShowSettings(false)}>
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title> Settings </Offcanvas.Title>
@@ -85,9 +85,11 @@ export default function Quiz() {
                     </form>
                 </Offcanvas.Body>
             </Offcanvas>
-            <Question question={question} answered={answered} setAnswered={setAnswered}/>
-            <Button variant="primary" onClick={() => setShowSettings(true)}> Settings </Button>
-            <Button variant="primary" onClick={() => setQuestion(getNewQuestion())}> Next Question </Button>
+            <div className="quiz-container">
+                <Question question={question} answered={answered} setAnswered={setAnswered}/>
+                <Button className="quiz-button" variant="primary" onClick={() => setShowSettings(true)}> Settings </Button>
+                <Button variant="primary" onClick={() => setQuestion(getNewQuestion())}> Next Question </Button>
+            </div>
         </div>
     );
 }

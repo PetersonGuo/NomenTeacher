@@ -14,8 +14,8 @@ export default function App() {
               <Route exact path='/' element={ <Navigate replace to="/home" /> }></Route>
               <Route exact path='/home' element={ <Home /> }></Route>
               <Route exact path='/quiz' element={ <Quiz /> }></Route>
-              <Route exact path='/ionic' element={ <IonicBonds /> }></Route>
-              <Route exact path='/covalent' element={ <CovalentBonds /> }></Route>
+              <Route exact path='/ionic-bonds' element={ <IonicBonds /> }></Route>
+              <Route exact path='/covalent-bonds' element={ <CovalentBonds /> }></Route>
           </Routes>
       </BrowserRouter>
   );
