@@ -16,10 +16,6 @@ export default function MyNav() {
                         <NavDropdown title="Study Material" id="basic-nav-dropdown">
                             <NavDropdown.Item href="mnbonds">Metal Non-Metal Bonds</NavDropdown.Item>
                             <NavDropdown.Item href="nnbonds">Non-Metal Non-Metal Bonds</NavDropdown.Item>
-                            {/*<NavDropdown.Divider />*/}
-                            {/*<NavDropdown.Item href="#action/3.4">*/}
-                            {/*    Separated link*/}
-                            {/*</NavDropdown.Item>*/}
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>

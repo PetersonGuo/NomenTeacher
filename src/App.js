@@ -2,9 +2,9 @@ import './App.css';
 import MyNav from "./components/MyNav";
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from "./components/pages/Home";
-import Quiz from "./components/pages/Quiz";
-import MNBonds from "./components/pages/MNBonds";
-import NNBonds from "./components/pages/NNBonds";
+import Quiz from "./components/pages/Quiz/Quiz";
+import IonicBonds from "./components/pages/IonicBonds";
+import CovalentBonds from "./components/pages/CovalentBonds";
 
 export default function App() {
   return (
@@ -14,8 +14,8 @@ export default function App() {
               <Route exact path='/' element={ <Navigate replace to="/home" /> }></Route>
               <Route exact path='/home' element={ <Home /> }></Route>
               <Route exact path='/quiz' element={ <Quiz /> }></Route>
-              <Route exact path='/mnbonds' element={ <MNBonds /> }></Route>
-              <Route exact path='/nnbonds' element={ <NNBonds /> }></Route>
+              <Route exact path='/ionic' element={ <IonicBonds /> }></Route>
+              <Route exact path='/covalent' element={ <CovalentBonds /> }></Route>
           </Routes>
       </BrowserRouter>
   );
