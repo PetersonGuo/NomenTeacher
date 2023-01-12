@@ -24,3 +24,4 @@ yarn-error.log*
 .idea/modules.xml
 .idea/nomen-teacher-template.iml
 .idea/vcs.xml
+.idea/workspace.xml

@@ -2,13 +2,13 @@ import React from 'react';
 import './Quiz.css';
 import Answer from "./Answer";
 export default function Question(props) {
-    const answersElement = props.question.answers.map(a => {
+    const questionDone = props.numberOfFails - props.numberOfTries == 0 ? true : false;
+    const answersElement = props.question.answers.map(ans => {
         return (
             <div>
-                <Answer answer={a.answer} isRight={a.isRight} answered={props.answered} setAnswered={props.setAnswered}/>
+                <Answer answer={ans.answer} isRight={ans.isRight} isClicked={ans.isClicked} setQuestion={props.setQuestion} questionDone={questionDone}/>
                 <br/>
             </div>
-
         )
     });
     console.log(props.question)
