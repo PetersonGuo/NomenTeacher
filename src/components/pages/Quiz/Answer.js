@@ -5,7 +5,9 @@ import './Answer.css'
 
 export default function Answer(props) {
     return (
-        <Button className="answer-button" variant={(props.questionDone || props.isClicked) && props.isRight ? "success" : props.isClicked && !props.isRight && !props.questionDone ? "warning" : "primary"} onClick={!props.questionDone ? () => props.setQuestion(true) : () => {}}>
+        <Button className="answer-button"
+                variant={(props.questionDone || props.isClicked) && props.isRight ? "success" : props.isClicked && !props.isRight && !props.questionDone ? "warning" : "primary"}
+                onClick={!props.questionDone ? () => {props.setQuestion(true)} : () => {}}>
             {props.answer}
         </Button>
     )

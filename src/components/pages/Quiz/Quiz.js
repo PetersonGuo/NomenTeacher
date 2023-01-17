@@ -70,9 +70,10 @@ export default function Quiz() {
 
     function setClicked(event){
         setQuestion(prevQuestion => {
-            const newAnswers = prevQuestion.map(ans => {
+            let newAnswers = prevQuestion.map(ans => {
                 return ans.id === event.target.id ? { ...ans, isClicked: true} : ans;
             })
+            console.log(newAnswers);
             return {
                 ...prevQuestion,
                 answers: {newAnswers}
@@ -106,7 +107,7 @@ export default function Quiz() {
                 </Offcanvas.Body>
             </Offcanvas>
             <div className="quiz-container">
-                <Question question={question} setClicked={setClicked}/>
+                <Question question={question} setClicked={setClicked} setQuestion={setQuestion}/>
                 <Button className="quiz-button" variant="primary" onClick={() => setShowSettings(true)}> Settings </Button>
                 <Button variant="primary" onClick={() => setQuestion(getNewQuestion())}> Next Question </Button>
             </div>
