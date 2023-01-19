@@ -6,12 +6,17 @@ export default function Question(props) {
     const answersElement = props.question.answers.map(ans => {
         return (
             <div>
-                <Answer answer={ans.answer} isRight={ans.isRight} isClicked={ans.isClicked} setQuestion={props.setQuestion} questionDone={questionDone}/>
+                <Answer id={ans.id}
+                        answer={ans.answer}
+                        isRight={ans.isRight}
+                        isClicked={ans.isClicked}
+                        setClicked={props.setClicked}
+                        questionDone={questionDone}
+                />
                 <br/>
             </div>
         )
     });
-    console.log(props.question)
     return (
         <div>
             {props.question.question === "" ? "" : <section>

@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 export default function Quiz() {
-    const [setQChoices] = React.useState({
+    const [qChoices, setQChoices] = React.useState({
         IonicBonds: false,
         CovalentBonds: false
     });
@@ -68,15 +68,14 @@ export default function Quiz() {
         };
     }
 
-    function setClicked(event){
+    function setClicked(id){
         setQuestion(prevQuestion => {
-            let newAnswers = prevQuestion.map(ans => {
-                return ans.id === event.target.id ? { ...ans, isClicked: true} : ans;
+            let newAnswers = prevQuestion.answers.map(ans => {
+                return ans.id === id ? { ...ans, isClicked: true} : ans;
             })
-            console.log(newAnswers);
             return {
                 ...prevQuestion,
-                answers: {newAnswers}
+                answers: newAnswers
             }
         });
     }
@@ -107,7 +106,7 @@ export default function Quiz() {
                 </Offcanvas.Body>
             </Offcanvas>
             <div className="quiz-container">
-                <Question question={question} setClicked={setClicked} setQuestion={setQuestion}/>
+                <Question question={question} setClicked={setClicked}/>
                 <Button className="quiz-button" variant="primary" onClick={() => setShowSettings(true)}> Settings </Button>
                 <Button variant="primary" onClick={() => setQuestion(getNewQuestion())}> Next Question </Button>
             </div>
