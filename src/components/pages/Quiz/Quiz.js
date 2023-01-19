@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 
 export default function Quiz() {
-    const [qChoices, setQChoices] = React.useState({
+    const [setQChoices] = React.useState({
         IonicBonds: false,
         CovalentBonds: false
     });
