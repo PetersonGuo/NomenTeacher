@@ -54,6 +54,16 @@ export default function Nav(props) {
             Covalent Bonds
           </a>
         </Typography>
+        <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-normal"
+        >
+          <a href="https://ptable.com/?lang=en#Properties" target={"_blank"} className="flex items-center">
+            Periodic Table
+          </a>
+        </Typography>
         <div className="cursor-pointer sm:hidden md:block lg:block" style={{marginRight: 0}}
              onClick={props.toggleDarkMode}>
           {props.darkMode ? <MoonIcon className="text-white"/> : <SunIcon className={"text-black"}/>}

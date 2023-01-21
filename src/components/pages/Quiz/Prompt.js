@@ -1,6 +1,6 @@
 import './Quiz.css';
 import Answer from "./Answer";
-export default function Question(props) {
+export default function Prompt(props) {
     const questionDone = props.numberOfFails - props.numberOfTries === 0;
     const answersElement = props.question.answers.map(ans => {
         return (
