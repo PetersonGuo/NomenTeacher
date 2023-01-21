@@ -15,16 +15,18 @@ export default function App() {
 
   return (
       <BrowserRouter>
-        <div className={`h-full w-full mx-auto py-2 ${darkMode ? "dark" : ""}`}>
-          <Nav darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
+        <div className={`h-screen w-screen`}>
+          <div className="py-4">
+            <Nav darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+          </div>
+          <Routes>
+            <Route exact path='/' element={<Navigate replace to="/home"/>}></Route>
+            <Route exact path='/home' element={<Home/>}></Route>
+            <Route exact path='/quiz' element={<Quiz/>}></Route>
+            <Route exact path='/ionic-bonds' element={<IonicBonds/>}></Route>
+            <Route exact path='/covalent-bonds' element={<CovalentBonds/>}></Route>
+          </Routes>
         </div>
-        <Routes>
-          <Route exact path='/' element={<Navigate replace to="/home"/>}></Route>
-          <Route exact path='/home' element={<Home/>}></Route>
-          <Route exact path='/quiz' element={<Quiz/>}></Route>
-          <Route exact path='/ionic-bonds' element={<IonicBonds/>}></Route>
-          <Route exact path='/covalent-bonds' element={<CovalentBonds/>}></Route>
-        </Routes>
       </BrowserRouter>
   );
 }

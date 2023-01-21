@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {IconButton, MobileNav, Navbar, Typography,} from "@material-tailwind/react";
-import Sun from './Sun';
-import Night from './Night';
+import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 
 export default function Nav(props) {
   const [openNav, setOpenNav] = useState(false);
@@ -55,22 +54,22 @@ export default function Nav(props) {
             Covalent Bonds
           </a>
         </Typography>
-        <div className="cursor-pointer sm:hidden md:block lg:block" style={{marginRight: 0}} onClick={props.toggleDarkMode}>
-          {props.darkMode ? <Night color={"white"}/> : <Sun color={"black"}/>}
+        <div className="cursor-pointer sm:hidden md:block lg:block" style={{marginRight: 0}}
+             onClick={props.toggleDarkMode}>
+          {props.darkMode ? <MoonIcon color={"white"}/> : <SunIcon color={"black"}/>}
         </div>
       </ul>
   );
 
   return (
-      <Navbar className="mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4">
-        <div className="container mx-auto flex items-center justify-between text-blue-gray-900">
+      <Navbar className="mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4 bg-slate-900 border-0 rounded-xl">
+        <div className="container mx-auto flex items-center justify-between">
           <Typography
               as="a"
               href="../home"
-              variant="small"
-              className="mr-4 cursor-pointer py-1.5 font-normal"
+              className="mr-4 cursor-pointer py-1.5 font-bold text-lg"
           >
-            <span>NomenTeacher</span>
+            <span className="text-black dark:text-white">NomenTeacher</span>
           </Typography>
           <div className="hidden lg:block">{navList}</div>
           <IconButton
@@ -111,7 +110,7 @@ export default function Nav(props) {
             )}
           </IconButton>
         </div>
-        <MobileNav open={openNav}>
+        <MobileNav open={openNav} className="opacity-100">
           {navList}
         </MobileNav>
       </Navbar>

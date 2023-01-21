@@ -4,13 +4,15 @@ import Question from "./Question";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Offcanvas from 'react-bootstrap/Offcanvas';
+import Modal from './Modal';
 
 export default function Quiz() {
     const [qChoices, setQChoices] = React.useState({
         IonicBonds: false,
         CovalentBonds: false
     });
-
+    const [open, setOpen] = React.useState(false);
+    console.log(open);
     const [showSettings, setShowSettings] = React.useState(false);
     const [question, setQuestion] = React.useState({
         question: "Why did the chicken cross the road?",
@@ -51,7 +53,7 @@ export default function Quiz() {
                 isRight: false
             },{
                 id: 1,
-                answer: "he dnt to",
+                answer: "he didnt to",
                 isClicked: false,
                 isRight: false
             },{
@@ -74,7 +76,7 @@ export default function Quiz() {
                 return ans.id === id ? { ...ans, isClicked: true} : ans;
             })
             return {
-                ...prevQuestion,
+                prevQuestion,
                 answers: newAnswers
             }
         });
@@ -105,11 +107,14 @@ export default function Quiz() {
                     </form>
                 </Offcanvas.Body>
             </Offcanvas>
-            <div className="quiz-container">
+            <div className="quiz-container w-full h-full">
                 <Question question={question} setClicked={setClicked}/>
-                <Button className="quiz-button" variant="primary" onClick={() => setShowSettings(true)}> Settings </Button>
-                <Button variant="primary" onClick={() => setQuestion(getNewQuestion())}> Next Question </Button>
+                <div className="">
+                    <button className="" onClick={() => setOpen(true)}>Settings</button>
+                    <button className="" onClick={() => setQuestion(getNewQuestion())}>Next Question</button>
+                </div>
             </div>
+            <Modal id="modal" className="hidden" setOpen={setOpen} isOpen={open}/>
         </div>
     );
 }

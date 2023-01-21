@@ -13,17 +13,15 @@ export default function Question(props) {
                         setClicked={props.setClicked}
                         questionDone={questionDone}
                 />
-                <br/>
             </div>
         )
     });
     return (
         <div>
-            {props.question.question === "" ? "" : <section>
-                {props.question.question}
-                <br/>
+           <section>
+              <div className="text-3xl font-bold mb-10">{props.question.question}</div>
                 {answersElement}
-            </section>}
+            </section>
         </div>
     )
 }
