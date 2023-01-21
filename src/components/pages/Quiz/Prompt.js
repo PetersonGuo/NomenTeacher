@@ -5,12 +5,14 @@ export default function Prompt(props) {
   const answersElement = props.question.answers.map(ans => {
     return (
         <div key={ans.id}>
-          <Answer answer={ans.answer}
-                  isRight={ans.isRight}
-                  isClicked={ans.isClicked}
-                  setClicked={props.setClicked}
-                  answered={props.answered}
-                  setAnswered={props.setAnswered}
+          <Answer
+              id={ans.id}
+              answer={ans.answer}
+              isRight={ans.isRight}
+              isClicked={ans.isClicked}
+              setClicked={props.setClicked}
+              answered={props.answered}
+              setAnswered={props.setAnswered}
           />
         </div>
     )

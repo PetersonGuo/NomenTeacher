@@ -7,20 +7,19 @@ import questions from './questions.json';
 export default function Quiz() {
   let queue = new Array(10);
   const [open, setOpen] = React.useState(false);
-  const [question, setQuestion] = React.useState(getQuestion);
   const [answered, setAnswered] = React.useState(false);
+  const [question, setQuestion] = React.useState(getQuestion);
 
   function setClicked(id) {
-    setQuestion(prevQuestion => {
-      let newAnswers = prevQuestion.answers.map(ans => {
-        console.log(ans);
-        return ans.id === id ? {...ans.id, isClicked: true} : ans;
-      })
-      return {
-        prevQuestion,
-        answers: newAnswers
+    for (let i in question.answers) {
+      console.log(i.id);
+      console.log(id);
+      if (i.id === id) {
+        i.id.isClicked = true;
       }
-    });
+    }
+    console.log(id);
+    console.log(question);
   }
 
   function getQuestion() {
@@ -37,6 +36,7 @@ export default function Quiz() {
       currentIndex--;
       [q.answers[currentIndex], q.answers[randomIndex]] = [q.answers[randomIndex], q.answers[currentIndex]];
     }
+    setAnswered(false);
     return q;
   }
 

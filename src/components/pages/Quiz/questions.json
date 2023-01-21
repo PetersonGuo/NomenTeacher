@@ -2,8 +2,6 @@
   "questions": [
     {
       "question": "Why did the chicken cross the road?",
-      "numberOfFails": 1,
-      "numberOfTries": 0,
       "answers": [
         {
           "id": 0,
@@ -26,8 +24,6 @@
     },
     {
       "question": "Why road?",
-      "numberOfFails": 1,
-      "numberOfTries": 0,
       "answers": [
         {
           "id": 0,
