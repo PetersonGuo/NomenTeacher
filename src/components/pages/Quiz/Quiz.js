@@ -11,15 +11,7 @@ export default function Quiz() {
   const [question, setQuestion] = React.useState(getQuestion);
 
   function setClicked(id) {
-    for (let i in question.answers) {
-      console.log(i.id);
-      console.log(id);
-      if (i.id === id) {
-        i.id.isClicked = true;
-      }
-    }
-    console.log(id);
-    console.log(question);
+    question.answers.find(e => e.id === id).isClicked = true;
   }
 
   function getQuestion() {
