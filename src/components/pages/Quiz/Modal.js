@@ -35,7 +35,7 @@ export default function Modal(props) {
                   <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
                       <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                        <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 flex flex-row gap-x-[35%]">
+                        <Dialog.Title as="h3" className="text-lg font-medium leading-6 text-gray-900 flex flex-row gap-x-[37%]">
                           <Cog8ToothIcon className="h-5 w-5 text-gray-600" aria-hidden="true" />
                           Settings
                         </Dialog.Title>
