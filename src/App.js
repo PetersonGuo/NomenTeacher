@@ -15,7 +15,7 @@ export default function App() {
 
   return (
       <BrowserRouter>
-        <div className={`h-screen w-screen overflow-hidden`}>
+        <div className={`h-screen w-screen overflow-x-hidden`}>
           <div className="py-4">
             <Nav darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
           </div>

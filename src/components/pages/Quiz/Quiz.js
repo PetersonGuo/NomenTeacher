@@ -8,11 +8,13 @@ export default function Quiz() {
   let queue = new Array(10);
   const [open, setOpen] = React.useState(false);
   const [question, setQuestion] = React.useState(getQuestion);
+  const [answered, setAnswered] = React.useState(false);
 
   function setClicked(id) {
     setQuestion(prevQuestion => {
       let newAnswers = prevQuestion.answers.map(ans => {
-        return ans.id === id ? {...ans, isClicked: true} : ans;
+        console.log(ans);
+        return ans.id === id ? {...ans.id, isClicked: true} : ans;
       })
       return {
         prevQuestion,
@@ -24,14 +26,10 @@ export default function Quiz() {
   function getQuestion() {
     const qs = questions.questions;
     let q = qs[qs.length * Math.random() << 0];
-    if (queue.length !== 0) {
-      while (queue.includes(q)) {
-        q = qs[qs.length * Math.random() << 0];
-      }
-      if (queue.length === 10) {
-        queue.shift();
-      }
+    while (queue.includes(q)) {
+      q = qs[qs.length * Math.random() << 0];
     }
+    queue.shift();
     queue.push(q);
     let currentIndex = q.answers.length, randomIndex;
     while (currentIndex !== 0) {
@@ -43,18 +41,16 @@ export default function Quiz() {
   }
 
   return (
-      <div className={"w-full h-full"}>
-        <div className="align-content-center">
-          <Prompt question={question} setClicked={setClicked}/>
-          <div className={"absolute left-[50%] bottom-[20%]"}>
-            <div className={"grid grid-cols-2 relative left-[-50%] gap-x-[40px]"}>
-              <button className={"button"} style={{marginLeft: "initial", marginRight: "initial"}}
-                      onClick={() => setOpen(true)}>Settings
-              </button>
-              <button className={"button"} style={{marginLeft: "initial", marginRight: "initial"}}
-                      onClick={() => setQuestion(getQuestion())}>Next Question
-              </button>
-            </div>
+      <div>
+        <Prompt question={question} setClicked={setClicked} answered={answered} setAnswered={setAnswered} />
+        <div className={"fixed left-[50%] bottom-[20%]"}>
+          <div className={"grid grid-cols-2 relative left-[-50%] gap-x-[40px]"}>
+            <button className={"button"} style={{marginLeft: "initial", marginRight: "initial"}}
+                    onClick={() => setOpen(true)}>Settings
+            </button>
+            <button className={"button"} style={{marginLeft: "initial", marginRight: "initial"}}
+                    onClick={() => setQuestion(getQuestion())}>Next Question
+            </button>
           </div>
         </div>
         <Modal className="" setOpen={setOpen} open={open}/>
