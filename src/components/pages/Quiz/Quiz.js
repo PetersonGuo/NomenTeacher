@@ -81,7 +81,7 @@ export default function Quiz() {
       <div className={"w-full h-full"}>
         <div className="align-content-center">
           <Question question={question} setClicked={setClicked}/>
-          <div className={"absolute left-[50%] bottom-[25%]"}>
+          <div className={"absolute left-[50%] bottom-[20%]"}>
             <div className={"grid grid-cols-2 relative left-[-50%] gap-x-[40px]"}>
               <button className={"button"} style={{marginLeft: "initial", marginRight: "initial"}}
                       onClick={() => setOpen(true)}>Settings

@@ -16,7 +16,7 @@ export default function Question(props) {
         )
     });
     return (
-        <div className={"py-20"}>
+        <div className={"py-40"}>
               <div className="text-3xl font-bold mb-10">{props.question.question}</div>
                 {answersElement}
         </div>
