@@ -1,4 +1,3 @@
-import React from 'react';
 import './Quiz.css';
 import Answer from "./Answer";
 export default function Question(props) {
@@ -17,11 +16,9 @@ export default function Question(props) {
         )
     });
     return (
-        <div>
-           <section>
+        <div className={"py-20"}>
               <div className="text-3xl font-bold mb-10">{props.question.question}</div>
                 {answersElement}
-            </section>
         </div>
     )
 }

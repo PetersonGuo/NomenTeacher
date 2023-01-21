@@ -1,9 +1,6 @@
 import React from 'react';
 import './Quiz.css';
 import Question from "./Question";
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Offcanvas from 'react-bootstrap/Offcanvas';
 import Modal from './Modal';
 
 export default function Quiz() {
@@ -12,8 +9,6 @@ export default function Quiz() {
         CovalentBonds: false
     });
     const [open, setOpen] = React.useState(false);
-    console.log(open);
-    const [showSettings, setShowSettings] = React.useState(false);
     const [question, setQuestion] = React.useState({
         question: "Why did the chicken cross the road?",
         numberOfFails: 1,
@@ -82,39 +77,16 @@ export default function Quiz() {
         });
     }
 
-    function handleQuestionChange(event){
-        setQChoices(prevChoices => {
-            return {
-                ...prevChoices,
-                [event.target.name]: event.target.checked
-            }
-        });
-    }
-
-
     return (
-        <div>
-            <Offcanvas show={showSettings} onHide={() => setShowSettings(false)}>
-                <Offcanvas.Header closeButton>
-                    <Offcanvas.Title> Settings </Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <form>
-                        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-                            <Form.Check type="checkbox" label="Ionic Bonds" name="IonicBonds" onChange={handleQuestionChange}/>
-                            <Form.Check type="checkbox" label="Covalent Bonds" name="CovalentBonds" onChange={handleQuestionChange}/>
-                        </Form.Group>
-                    </form>
-                </Offcanvas.Body>
-            </Offcanvas>
-            <div className="quiz-container w-full h-full">
+        <div className={"w-full h-full"}>
+            <div className="align-content-center">
                 <Question question={question} setClicked={setClicked}/>
-                <div className="">
-                    <button className="" onClick={() => setOpen(true)}>Settings</button>
-                    <button className="" onClick={() => setQuestion(getNewQuestion())}>Next Question</button>
+                <div className={"flex gap-x-20 justify-center"}>
+                    <button className={"button"} style={{marginLeft: "initial", marginRight: "initial"}} onClick={() => setOpen(true)}>Settings</button>
+                    <button className={"button"} style={{marginLeft: "initial", marginRight: "initial"}} onClick={() => setQuestion(getNewQuestion())}>Next Question</button>
                 </div>
             </div>
-            <Modal id="modal" className="hidden" setOpen={setOpen} isOpen={open}/>
+            <Modal className="" setOpen={setOpen} open={open} />
         </div>
     );
 }

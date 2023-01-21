@@ -56,7 +56,7 @@ export default function Nav(props) {
         </Typography>
         <div className="cursor-pointer sm:hidden md:block lg:block" style={{marginRight: 0}}
              onClick={props.toggleDarkMode}>
-          {props.darkMode ? <MoonIcon color={"white"}/> : <SunIcon color={"black"}/>}
+          {props.darkMode ? <MoonIcon className="text-white"/> : <SunIcon className={"text-black"}/>}
         </div>
       </ul>
   );

@@ -16,21 +16,24 @@ code {
     monospace;
 }
 
+* {
+  text-align: center;
+}
+
 .dark {
   @apply bg-gray-800 text-zinc-50;
 }
 
-button {
+.button {
   color: #61A0FE;
   border-radius: 0.5rem;
   border-width: 2px;
-  border-color: #61A0FE;
+  border-color: dodgerblue;
   padding: 0.25rem 0.5rem;
-  margin: 2rem;
+  margin: 1.25rem auto;
 }
 
-button:hover {
+.button:hover {
   color: white;
-  border-radius: 0.5rem;
   background-color: #61A0FE;
 }
