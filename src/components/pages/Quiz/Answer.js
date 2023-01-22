@@ -7,7 +7,6 @@ export default function Answer(props) {
           " hover:bg-blue-500"}`}
               onClick={!props.answered ? () => {
                 props.setClicked(props.id);
-                props.setAnswered(true)
               } : () => {
               }}
       >

@@ -9,9 +9,8 @@ export default function Prompt(props) {
             answer={ans.answer}
             isRight={ans.isRight}
             isClicked={ans.isClicked}
+            answered={props.question.answered}
             setClicked={props.setClicked}
-            answered={props.answered}
-            setAnswered={props.setAnswered}
         />
     )
   });
