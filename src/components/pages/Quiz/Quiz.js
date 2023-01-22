@@ -2,8 +2,7 @@ import React from 'react';
 import './Quiz.css';
 import Prompt from "./Prompt";
 import Modal from './Modal';
-import questions from './questions.json';
-import {forEach} from "react-bootstrap/ElementChildren";
+import questions from './questionsArray';
 
 export default function Quiz() {
   let queue = new Array(10);
@@ -12,7 +11,15 @@ export default function Quiz() {
   const [question, setQuestion] = React.useState(getQuestion);
 
   function setClicked(id) {
-    question.answers.find(e => e.id === id).isClicked = true;
+    setQuestion(prevQuestion => {
+      let newAnswers = prevQuestion.answers.map(ans => {
+        return ans.id === id ? { ...ans, isClicked: true} : ans;
+      })
+      return {
+        ...prevQuestion,
+        answers: newAnswers
+      };
+    });
   }
 
   function used(q) {
@@ -23,7 +30,7 @@ export default function Quiz() {
   }
 
   function getQuestion() {
-    const qs = questions.questions;
+    const qs = questions;
     let q = qs[qs.length * Math.random() << 0];
     while (used(q)) {
       q = qs[qs.length * Math.random() << 0];
