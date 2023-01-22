@@ -1,6 +1,3 @@
-import './Quiz.css';
-import './Answer.css'
-
 export default function Answer(props) {
   return (
       <button className={`my-4 border-2 rounded-lg mx-auto my-3 py-1 px-2 w-full text-white 

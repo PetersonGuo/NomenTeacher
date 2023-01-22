@@ -1,4 +1,3 @@
-import './Quiz.css';
 import Answer from "./Answer";
 
 export default function Prompt(props) {

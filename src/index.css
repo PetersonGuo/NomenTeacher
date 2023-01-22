@@ -23,17 +23,3 @@ code {
 .dark {
   @apply bg-gray-800 text-zinc-50;
 }
-
-.button {
-  color: #61A0FE;
-  border-radius: 0.5rem;
-  border-width: 2px;
-  border-color: dodgerblue;
-  padding: 0.25rem 0.5rem;
-  margin: 1.25rem auto;
-}
-
-.button:hover {
-  color: white;
-  background-color: #61A0FE;
-}
