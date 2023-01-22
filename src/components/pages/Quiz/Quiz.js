@@ -5,6 +5,7 @@ import questions from './questions.json';
 import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/outline";
 
 export default function Quiz() {
+  const [correct, setCorrect] = React.useState(0);
   const [queue, setQueue] = React.useState([]);
   const [index, setIndex] = React.useState(-1);
   const [open, setOpen] = React.useState(false);
@@ -13,6 +14,7 @@ export default function Quiz() {
 
   function setClicked(id) {
     setQuestion(prevQuestion => {
+      if (prevQuestion.answers.find(e => e.id === id).isRight) setCorrect(correct+1);
       let newAnswers = prevQuestion.answers.map(ans => {
         return ans.id === id ? {...ans, isClicked: true} : ans;
       })
@@ -65,6 +67,8 @@ export default function Quiz() {
         <button className={"mx-auto hover:color-white hover:bg-blue-500 my-5 py-1 px-2 border-blue-500 rounded-lg" +
             " border-2 w-60 h-10 cursor-pointer"} onClick={() => setOpen(true)}>Settings
         </button>
+        <p>Question: {index+1} / {queue.length}</p>
+        <p>Correct: {correct} / {queue.length}</p>
         <Prompt question={question} setClicked={setClicked} answered={answered} setAnswered={setAnswered}/>
         <div className={"fixed left-[50%] bottom-[20%]"}>
           <div className={"grid grid-cols-2 relative left-[-50%] gap-x-32"}>
