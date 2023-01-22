@@ -3,7 +3,6 @@ import './Quiz.css';
 import Prompt from "./Prompt";
 import Modal from './Modal';
 import questions from './questions.json';
-import {forEach} from "react-bootstrap/ElementChildren";
 
 export default function Quiz() {
   let queue = new Array(10);
