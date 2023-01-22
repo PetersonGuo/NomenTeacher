@@ -3,6 +3,7 @@ import './Quiz.css';
 import Prompt from "./Prompt";
 import Modal from './Modal';
 import questions from './questions.json';
+import {forEach} from "react-bootstrap/ElementChildren";
 
 export default function Quiz() {
   let queue = new Array(10);
@@ -14,13 +15,20 @@ export default function Quiz() {
     question.answers.find(e => e.id === id).isClicked = true;
   }
 
+  function used(q) {
+    for (let i in queue) {
+      if (i.id === q.id) return true;
+    }
+    return false;
+  }
+
   function getQuestion() {
     const qs = questions.questions;
     let q = qs[qs.length * Math.random() << 0];
-    while (queue.includes(q)) {
+    while (used(q)) {
       q = qs[qs.length * Math.random() << 0];
     }
-    queue.shift();
+    let remove = queue.shift(); // Removed element
     queue.push(q);
     let currentIndex = q.answers.length, randomIndex;
     while (currentIndex !== 0) {
@@ -34,7 +42,7 @@ export default function Quiz() {
 
   return (
       <div>
-        <Prompt question={question} setClicked={setClicked} answered={answered} setAnswered={setAnswered} />
+        <Prompt question={question} setClicked={setClicked} answered={answered} setAnswered={setAnswered}/>
         <div className={"fixed left-[50%] bottom-[20%]"}>
           <div className={"grid grid-cols-2 relative left-[-50%] gap-x-[40px]"}>
             <button className={"button"} style={{marginLeft: "initial", marginRight: "initial"}}
