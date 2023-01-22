@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {IconButton, MobileNav, Navbar, Typography,} from "@material-tailwind/react";
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
+import { motion } from 'framer-motion';
 
 export default function Nav(props) {
   const [openNav, setOpenNav] = useState(false);
@@ -16,53 +17,48 @@ export default function Nav(props) {
       <ul className="mb-4 mt-2 flex flex-row gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
         <Typography
             as="li"
-            variant="small"
             color="blue-gray"
             className="p-1 font-normal"
         >
-          <a href="../home" className="flex items-center">
+          <motion.a href="../home" className="flex items-center" whileHover={{scale: 1.1}}>
             Home
-          </a>
+          </motion.a>
         </Typography>
         <Typography
             as="li"
-            variant="small"
             color="blue-gray"
             className="p-1 font-normal"
         >
-          <a href="../quiz" className="flex items-center">
+          <motion.a href="../quiz" className="flex items-center" whileHover={{scale: 1.1}}>
             Quizzing Tool
-          </a>
+          </motion.a>
         </Typography>
         <Typography
             as="li"
-            variant="small"
             color="blue-gray"
             className="p-1 font-normal"
         >
-          <a href="../ionic-bonds" className="flex items-center">
+          <motion.a href="../ionic-bonds" className="flex items-center" whileHover={{scale: 1.1}}>
             Ionic Bonds
-          </a>
+          </motion.a>
         </Typography>
         <Typography
             as="li"
-            variant="small"
             color="blue-gray"
             className="p-1 font-normal"
         >
-          <a href="../covalent-bonds" className="flex items-center">
+          <motion.a href="../covalent-bonds" className="flex items-center" whileHover={{scale: 1.1}}>
             Covalent Bonds
-          </a>
+          </motion.a>
         </Typography>
         <Typography
             as="li"
-            variant="small"
             color="blue-gray"
             className="p-1 font-normal"
         >
-          <a href="https://ptable.com/?lang=en#Properties" target={"_blank"} className="flex items-center">
+          <motion.a href="https://ptable.com/?lang=en#Properties" target={"_blank"} className="flex items-center" whileHover={{scale: 1.1}}>
             Periodic Table
-          </a>
+          </motion.a>
         </Typography>
         <div className="cursor-pointer sm:hidden md:block lg:block" style={{marginRight: 0}}
              onClick={props.toggleDarkMode}>
@@ -74,13 +70,13 @@ export default function Nav(props) {
   return (
       <Navbar className="mx-auto max-w-screen-xl py-2 px-4 lg:px-8 lg:py-4 bg-slate-900 border-0 rounded-xl">
         <div className="container mx-auto flex items-center justify-between">
-          <Typography
-              as="a"
+          <motion.a
               href="../home"
               className="mr-4 cursor-pointer py-1.5 font-bold text-lg"
+              whileHover={{scale: 1.1}}
           >
             <span className="text-black dark:text-white">NomenTeacher</span>
-          </Typography>
+          </motion.a>
           <div className="hidden lg:block">{navList}</div>
           <IconButton
               variant="text"
