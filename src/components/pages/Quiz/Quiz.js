@@ -1,8 +1,9 @@
 import React from 'react';
 import Prompt from "./Prompt";
+import Sidebar from "./Sidebar";
 import Modal from './Modal';
 import questions from './questions.json';
-import {ChevronLeftIcon, ChevronRightIcon} from "@heroicons/react/24/outline";
+import {ChevronLeftIcon, ChevronRightIcon, Cog8ToothIcon} from "@heroicons/react/24/outline";
 
 export default function Quiz() {
   const [correct, setCorrect] = React.useState(0);
@@ -63,9 +64,7 @@ export default function Quiz() {
 
   return (
       <>
-        <button className={"mx-auto hover:color-white hover:bg-blue-500 my-5 py-1 px-2 border-blue-500 rounded-lg" +
-            " border-2 w-60 h-10 cursor-pointer"} onClick={() => setOpen(true)}>Settings
-        </button>
+        <Cog8ToothIcon className={`mr-80 ml-auto mt-5 w-10 h-10 cursor-pointer`} onClick={() => setOpen(!open)} />
         <p>Question: {index+1} / {queue.length}</p>
         <p>Correct: {correct} / {queue.length}</p>
         <Prompt question={question} setClicked={setClicked} />
@@ -79,7 +78,7 @@ export default function Quiz() {
                     " border-2 w-60 h-10 cursor-pointer"} onClick={() => setQuestion(getQuestion())}/> : <div />}
           </div>
         </div>
-        <Modal setOpen={setOpen} open={open}/>
+        {open ? <Sidebar setOpen={setOpen} open={open}/> : <></>}
       </>
   );
 }
