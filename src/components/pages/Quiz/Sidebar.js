@@ -1,4 +1,4 @@
-import {AnimatePresence, motion, useCycle} from "framer-motion";
+import {AnimatePresence, motion} from "framer-motion";
 
 export const Side = ({ color, isVisible }) => (
     <AnimatePresence>
