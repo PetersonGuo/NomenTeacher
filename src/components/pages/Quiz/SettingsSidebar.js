@@ -54,7 +54,7 @@ export const Side = ({ isVisible }) => (
       )}
     </AnimatePresence>
 );
-export default function Sidebar(props) {
+export default function SettingsSidebar(props) {
   return (
       <div className="flex fixed top-0 right-0">
           <Side isVisible={props.isVisible} />

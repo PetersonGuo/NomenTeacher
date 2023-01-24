@@ -2,7 +2,6 @@ import React from 'react';
 import Prompt from "./Prompt";
 import SettingsSidebar from "./SettingsSidebar";
 import HistorySidebar from "./HistorySidebar";
-import Modal from './Modal';
 import questions from './questions.json';
 import {ChevronLeftIcon, ChevronRightIcon, Cog8ToothIcon} from "@heroicons/react/24/outline";
 import {useCycle} from "framer-motion";
@@ -13,7 +12,7 @@ export default function Quiz() {
   const [history, setHistory] = React.useState([]);
   const [index, setIndex] = React.useState(-1);
   const [question, setQuestion] = React.useState(getQuestion);
-  const [isVisible, onCycle] = useCycle(true, false);
+  const [isVisible, onCycle] = useCycle(false, true);
 
   function setClicked(id) {
     setQuestion(prevQuestion => {
@@ -87,7 +86,7 @@ export default function Quiz() {
                     " border-2 w-60 h-10 cursor-pointer"} onClick={() => setQuestion(getQuestion())}/> : <div />}
           </div>
         </div>
-        <Sidebar isVisible={isVisible} />
+        <SettingsSidebar isVisible={isVisible} />
       </>
   );
 }
