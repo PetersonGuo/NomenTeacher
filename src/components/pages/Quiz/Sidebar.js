@@ -1,6 +1,6 @@
 import {AnimatePresence, motion} from "framer-motion";
 
-export const Side = ({ color, isVisible }) => (
+export const Side = ({ isVisible }) => (
     <AnimatePresence>
       {isVisible && (
           <motion.div className="flex flex-col h-screen p-3 bg-white shadow w-72 bg-neutral-800 opacity-90" initial={{ x: "18rem" }} animate={{ x: 0 }} transition={{bounce: 0}} exit={{
