@@ -1,13 +1,15 @@
 import React from 'react';
 import Prompt from "./Prompt";
-import Sidebar from "./Sidebar";
-import questions from '../../../questions.json';
+import SettingsSidebar from "./SettingsSidebar";
+import HistorySidebar from "./HistorySidebar";
+import questions from './questions.json';
 import {ChevronLeftIcon, ChevronRightIcon, Cog8ToothIcon} from "@heroicons/react/24/outline";
 import {motion, useCycle} from "framer-motion";
 
 export default function Quiz() {
   const [correct, setCorrect] = React.useState(0);
   const [queue, setQueue] = React.useState([]);
+  const [history, setHistory] = React.useState([]);
   const [index, setIndex] = React.useState(-1);
   const [question, setQuestion] = React.useState(getQuestion);
   const [isVisible, onCycle] = useCycle(false, true);
@@ -36,7 +38,7 @@ export default function Quiz() {
 
   function getQuestion() {
     setIndex(index + 1);
-    if (index === queue.length - 1) {
+    if (index === queue.length-1) {
       const qs = questions.questions;
       let q = qs[qs.length * Math.random() << 0];
       while (used(q)) {
@@ -49,9 +51,14 @@ export default function Quiz() {
         currentIndex--;
         [q.answers[currentIndex], q.answers[randomIndex]] = [q.answers[randomIndex], q.answers[currentIndex]];
       }
-      let newQueue = queue;
-      newQueue.push(q);
-      setQueue(newQueue);
+      setQueue(prevQueue => {
+        prevQueue.push(q);
+        return prevQueue;
+      });
+      setHistory(prevHistory => {
+        prevHistory.push(q);
+        return prevHistory;
+      });
       return q;
     } else {
       return queue[index];
@@ -79,6 +86,11 @@ export default function Quiz() {
         <p className={"text-green-500"}>Correct: {correct} / {queue.length}</p>
         <Prompt question={question} setClicked={setClicked}/>
         <div className={"fixed left-[50%] bottom-[15%]"}>
+        <HistorySidebar history={history}/>
+        <p>Question: {index+1} / {queue.length}</p>
+        <p>Correct: {correct} / {queue.length}</p>
+        <Prompt question={question} setClicked={setClicked} />
+        <div className={"fixed left-[50%] bottom-[20%]"}>
           <div className={"grid grid-cols-2 relative left-[-50%] gap-x-32"}>
             {index === 0 ? <div/> : <ChevronLeftIcon
                 className={`mx-auto border-2 py-1 px-2 rounded-lg w-60 h-10 cursor-pointer hover:bg-blue-500 border-blue-500`}
@@ -88,7 +100,7 @@ export default function Quiz() {
                     " border-2 w-60 h-10 cursor-pointer"} onClick={() => setQuestion(getQuestion())}/> : <div/>}
           </div>
         </div>
-        <Sidebar isVisible={isVisible}/>
+        <SettingsSidebar isVisible={isVisible} />
       </>
   );
 }
