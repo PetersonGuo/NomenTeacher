@@ -25,3 +25,4 @@ yarn-error.log*
 .idea/nomen-teacher-template.iml
 .idea/vcs.xml
 .idea/workspace.xml
+*.xml
