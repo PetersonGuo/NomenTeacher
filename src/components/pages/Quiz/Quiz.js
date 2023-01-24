@@ -37,12 +37,6 @@ export default function Quiz() {
   }
 
   function getQuestion() {
-    if (index > 0) {
-      setHistory(prevHistory => {
-        prevHistory.push(question);
-        return prevHistory;
-      });
-    }
     setIndex(index + 1);
     if (index === queue.length - 1) {
       const qs = questions.questions;
@@ -57,10 +51,10 @@ export default function Quiz() {
         currentIndex--;
         [q.answers[currentIndex], q.answers[randomIndex]] = [q.answers[randomIndex], q.answers[currentIndex]];
       }
-      setQueue(prevQueue => {
-        prevQueue.push(q);
-        return prevQueue;
-      });
+
+      let newQueue = queue;
+      newQueue.push(q);
+      setQueue(newQueue);
       return q;
     } else {
       return queue[index];
@@ -74,37 +68,49 @@ export default function Quiz() {
 
   const COG = () => {
     return (
-        <motion.div className={"w-10 mr-[15vw] ml-auto mt-5 cursor-pointer"}
-                    animate={animate} transition={{bounce: 0, duration: 0.4}} onTap={() => {
-          cycle();
-          onCycle();
-        }}>
-          <Cog8ToothIcon className={`w-10 h-10`}/>
-        </motion.div>
+      <motion.div className={"w-10 mr-[15vw] ml-auto mt-5 cursor-pointer"}
+                  animate={animate} transition={{bounce: 0, duration: 0.4}} onTap={() => {
+        cycle();
+        onCycle();
+      }}>
+        <Cog8ToothIcon className={`w-10 h-10`}/>
+      </motion.div>
     );
   };
 
   return (
-      <>
+    <>
+      <COG/>
+      <p>Question: {index + 1} / {queue.length}</p>
+      <p>Correct: {correct} / {queue.length}</p>
+      <div className={"fixed left-[2%] top-[2%]"}>
         <HistorySidebar history={history}/>
-        <COG/>
-        <p>Question: {index + 1} / {queue.length}</p>
-        <p>Correct: {correct} / {queue.length}</p>
-        <div className={"fixed left-[50%] bottom-[15%]"}>
-          <HistorySidebar history={history}/>
+      </div>
+      <Prompt question={question} setClicked={setClicked}/>
+      <div className={"fixed left-[50%] bottom-[20%]"}>
+        <div className={"grid grid-cols-2 relative left-[-50%] gap-x-32"}>
+          {index === 0 ? <div/> : <ChevronLeftIcon
+            className={`mx-auto border-2 py-1 px-2 rounded-lg w-60 h-10 cursor-pointer hover:bg-blue-500 border-blue-500`}
+            onClick={() => previous()}/>}
+          {question.answered ? <ChevronRightIcon
+            className={"mx-auto hover:bg-blue-500 py-1 px-2 border-blue-500 rounded-lg border-2 w-60 h-10 cursor-pointer"}
+            onClick={() => {
+                if (index > 0) {
+                  let newHistory = history;
+                  newHistory.push(question);
+                  setHistory(newHistory);
+                  // setHistory(prevHistory => {
+                  //   prevHistory.push(question);
+                  //   return prevHistory;
+                  // });
+                  console.log(history);
+                }
+                setQuestion(getQuestion())
+              }
+            }/> : <div/>}
         </div>
-        <Prompt question={question} setClicked={setClicked}/>
-        <div className={"fixed left-[50%] bottom-[20%]"}>
-          <div className={"grid grid-cols-2 relative left-[-50%] gap-x-32"}>
-            {index === 0 ? <div/> : <ChevronLeftIcon
-                className={`mx-auto border-2 py-1 px-2 rounded-lg w-60 h-10 cursor-pointer hover:bg-blue-500 border-blue-500`}
-                onClick={() => previous()}/>}
-            {question.answered ? <ChevronRightIcon
-                className={"mx-auto hover:bg-blue-500 py-1 px-2 border-blue-500 rounded-lg" +
-                    " border-2 w-60 h-10 cursor-pointer"} onClick={() => setQuestion(getQuestion())}/> : <div/>}
-          </div>
-        </div>
-        <SettingsSidebar isVisible={isVisible}/>
-      </>
+      </div>
+      <SettingsSidebar isVisible={isVisible}/>
+    </>
   );
 }

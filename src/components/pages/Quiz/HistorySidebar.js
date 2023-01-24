@@ -6,8 +6,7 @@ export default function HistorySidebar(props) {
     const userAnswer = hist.answers.find(ans => {
       return ans.isClicked
     });
-    console.log(hist);
-    return (
+    return props.history.length - 6 < index ? (
       <li key={index}>
         <div
           className="flex text-left p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -18,7 +17,7 @@ export default function HistorySidebar(props) {
           Your answer: {userAnswer.answer}
         </div>
       </li>
-    );
+    ) : (<></>);
   });
   return (
     <aside className="w-64" aria-label="Sidebar">
