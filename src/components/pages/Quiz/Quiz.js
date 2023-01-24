@@ -86,10 +86,9 @@ export default function Quiz() {
       <>
         <COG/>
         <p>Question: {index + 1} / {queue.length}</p>
+        <p>Correct: {correct} / {queue.length}</p>
         <div className={"fixed left-[50%] bottom-[15%]"}>
           <HistorySidebar history={history}/>
-          <p>Question: {index + 1} / {queue.length}</p>
-          <p>Correct: {correct} / {queue.length}</p>
         </div>
         <Prompt question={question} setClicked={setClicked}/>
         <div className={"fixed left-[50%] bottom-[20%]"}>
