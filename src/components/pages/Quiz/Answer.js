@@ -2,7 +2,7 @@ import {motion} from "framer-motion";
 
 export default function Answer(props) {
   return (
-      <motion.button className={`my-4 border-2 rounded-lg mx-auto my-3 py-1 px-2 w-full text-white 
+      <motion.button className={`my-4 border-2 rounded-lg mx-auto w-full text-white
         ${props.answered ? `cursor-default 
           ${props.isRight ? "bg-green-700 border-green-700 hover:bg-green-700" :
           props.isClicked ? "border-red-700" : "border-blue-500"}` : "border-blue-500 animateButton"}`}
@@ -17,7 +17,7 @@ export default function Answer(props) {
                        bounce: 0
                      }}
       >
-        {props.answer}
+        <p className={"my-[10%] text-3xl"}>{props.answer}</p>
       </motion.button>
   )
 }
