@@ -64,7 +64,7 @@ export default function Quiz() {
 
   return (
       <>
-        <Cog8ToothIcon className={`mr-80 ml-auto mt-5 w-10 h-10 cursor-pointer`} onClick={() => setOpen(!open)} />
+        <Cog8ToothIcon className={`mr-80 ml-auto mt-5 w-10 h-10 cursor-pointer`} onClick={() => setOpen(prevOpen => {return !prevOpen})} />
         <p>Question: {index+1} / {queue.length}</p>
         <p>Correct: {correct} / {queue.length}</p>
         <Prompt question={question} setClicked={setClicked} />
