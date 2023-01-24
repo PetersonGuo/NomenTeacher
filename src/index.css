@@ -26,5 +26,4 @@ code {
 
 .animateButton {
   background: linear-gradient(to left, transparent 50%, rgb(59 130 246) 50%) right;
-  background-size: 200% 100%;
 }

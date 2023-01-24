@@ -10,6 +10,7 @@ export default function Answer(props) {
                        props.setClicked(props.id);
                      } : () => {
                      }}
+                     initial={{backgroundPosition: "100% 0%", backgroundSize: "200% 100%"}}
                      whileHover={{backgroundPosition: "0% 100%"}}
                      transition={{
                        duration: 0.3,
