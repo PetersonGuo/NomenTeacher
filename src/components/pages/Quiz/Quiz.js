@@ -1,6 +1,8 @@
 import React from 'react';
 import Prompt from "./Prompt";
-import Sidebar from "./Sidebar";
+import SettingsSidebar from "./SettingsSidebar";
+import HistorySidebar from "./HistorySidebar";
+import Modal from './Modal';
 import questions from './questions.json';
 import {ChevronLeftIcon, ChevronRightIcon, Cog8ToothIcon} from "@heroicons/react/24/outline";
 import {useCycle} from "framer-motion";
@@ -8,6 +10,7 @@ import {useCycle} from "framer-motion";
 export default function Quiz() {
   const [correct, setCorrect] = React.useState(0);
   const [queue, setQueue] = React.useState([]);
+  const [history, setHistory] = React.useState([]);
   const [index, setIndex] = React.useState(-1);
   const [question, setQuestion] = React.useState(getQuestion);
   const [isVisible, onCycle] = useCycle(true, false);
@@ -48,9 +51,14 @@ export default function Quiz() {
         currentIndex--;
         [q.answers[currentIndex], q.answers[randomIndex]] = [q.answers[randomIndex], q.answers[currentIndex]];
       }
-      let newQueue = queue;
-      newQueue.push(q);
-      setQueue(newQueue);
+      setQueue(prevQueue => {
+        prevQueue.push(q);
+        return prevQueue;
+      });
+      setHistory(prevHistory => {
+        prevHistory.push(q);
+        return prevHistory;
+      });
       return q;
     } else {
       return queue[index];
@@ -64,6 +72,7 @@ export default function Quiz() {
 
   return (
       <>
+        <HistorySidebar history={history}/>
         <Cog8ToothIcon className={`mr-80 ml-auto mt-5 w-10 h-10 cursor-pointer`} onClick={onCycle} />
         <p>Question: {index+1} / {queue.length}</p>
         <p>Correct: {correct} / {queue.length}</p>
