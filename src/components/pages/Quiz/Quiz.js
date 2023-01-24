@@ -37,6 +37,12 @@ export default function Quiz() {
   }
 
   function getQuestion() {
+    if (index > 0) {
+      setHistory(prevHistory => {
+        prevHistory.push(question);
+        return prevHistory;
+      });
+    }
     setIndex(index + 1);
     if (index === queue.length - 1) {
       const qs = questions.questions;
@@ -54,10 +60,6 @@ export default function Quiz() {
       setQueue(prevQueue => {
         prevQueue.push(q);
         return prevQueue;
-      });
-      setHistory(prevHistory => {
-        prevHistory.push(q);
-        return prevHistory;
       });
       return q;
     } else {
@@ -84,6 +86,7 @@ export default function Quiz() {
 
   return (
       <>
+        <HistorySidebar history={history}/>
         <COG/>
         <p>Question: {index + 1} / {queue.length}</p>
         <p>Correct: {correct} / {queue.length}</p>

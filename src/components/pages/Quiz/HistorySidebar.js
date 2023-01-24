@@ -1,14 +1,21 @@
-import Prompt from "./Prompt";
-
-export default function SettingsSidebar(props) {
-    const content = props.history.map(hist => {
-        return(
-            <li>
-                <a href="#"
-                   className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
-                >
-                    {/*<Prompt question={hist} setClicked={() => {console.log("Hi")}}/>*/}
-                </a>
+export default function HistorySidebar(props) {
+    const content = props.history.map((hist, index) => {
+        const questionAnswer = hist.answers.find(ans => {
+            return ans.isRight
+        });
+        const userAnswer = hist.answers.find(ans => {
+            return ans.isClicked
+        });
+        console.log(hist);
+        return (
+            <li key={index}>
+                <div className="flex text-left p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+                    {hist.question}
+                    <br/>
+                    Answer: {questionAnswer.answer}
+                    <br/>
+                    Your answer: {userAnswer.answer}
+                </div>
             </li>
         );
     });
