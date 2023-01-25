@@ -87,7 +87,7 @@ export default function Quiz() {
         <HistorySidebar history={history}/>
       </div>
       <Prompt question={question} setClicked={setClicked}/>
-      <div className={"fixed left-[50%] bottom-[20%]"}>
+      <div className={"fixed left-[50%] bottom-[15%]"}>
         <div className={"grid grid-cols-2 relative left-[-50%] gap-x-32"}>
           {index === 0 ? <div/> : <ChevronLeftIcon
             className={`mx-auto border-2 py-1 px-2 rounded-lg w-60 h-10 cursor-pointer hover:bg-blue-500 border-blue-500`}
