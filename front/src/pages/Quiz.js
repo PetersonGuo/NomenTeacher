@@ -1,8 +1,8 @@
 import React from 'react';
-import Prompt from "./Prompt";
-import SettingsSidebar from "./SettingsSidebar";
-import HistorySidebar from "./HistorySidebar";
-import questions from '../../../questions.json';
+import Prompt from "../components/Prompt";
+import SettingsSidebar from "../components/SettingsSidebar";
+import HistorySidebar from "../components/HistorySidebar";
+import questions from '../questions.json';
 import {ChevronLeftIcon, ChevronRightIcon, Cog8ToothIcon} from "@heroicons/react/24/outline";
 import {motion, useCycle} from "framer-motion";
 

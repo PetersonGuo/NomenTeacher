@@ -1,9 +1,9 @@
 import Nav from "./components/Nav";
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
-import Home from "./components/pages/Home";
-import Quiz from "./components/pages/Quiz/Quiz";
-import IonicBonds from "./components/pages/IonicBonds";
-import CovalentBonds from "./components/pages/CovalentBonds";
+import Home from "./pages/Home";
+import Quiz from "./pages/Quiz";
+import IonicBonds from "./pages/IonicBonds";
+import CovalentBonds from "./pages/CovalentBonds";
 import React from "react";
 
 export default function App() {
