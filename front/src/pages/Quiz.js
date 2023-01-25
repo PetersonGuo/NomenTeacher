@@ -1,4 +1,4 @@
-import React from 'react';
+import {useState} from 'react';
 import Prompt from "../components/Prompt";
 import SettingsSidebar from "../components/SettingsSidebar";
 import HistorySidebar from "../components/HistorySidebar";
@@ -7,11 +7,11 @@ import {ChevronLeftIcon, ChevronRightIcon, Cog8ToothIcon} from "@heroicons/react
 import {motion, useCycle} from "framer-motion";
 
 export default function Quiz() {
-  const [correct, setCorrect] = React.useState(0);
-  const [queue, setQueue] = React.useState([]);
-  const [history, setHistory] = React.useState([]);
-  const [index, setIndex] = React.useState(-1);
-  const [question, setQuestion] = React.useState(getQuestion);
+  const [correct, setCorrect] = useState(0);
+  const [queue, setQueue] = useState([]);
+  const [history, setHistory] = useState([]);
+  const [index, setIndex] = useState(-1);
+  const [question, setQuestion] = useState(getQuestion);
   const [isVisible, onCycle] = useCycle(false, true);
   const [animate, cycle] = useCycle({rotate: 180}, {rotate: -180});
 
@@ -99,10 +99,6 @@ export default function Quiz() {
                   let newHistory = history;
                   newHistory.push(question);
                   setHistory(newHistory);
-                  // setHistory(prevHistory => {
-                  //   prevHistory.push(question);
-                  //   return prevHistory;
-                  // });
                   console.log(history);
                 }
                 setQuestion(getQuestion())

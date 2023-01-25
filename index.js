@@ -1,12 +1,48 @@
 const express = require('express');
-const path = require('path');
+const cors = require('cors')
+const fs = require('fs');
+const dotenv = require('dotenv');
+const jwt = require('jsonwebtoken');
 
 const app = express();
-app.use(express.static('front/build'));
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'front', 'build', 'index.html'));
+
+dotenv.config();
+
+app.use(cors());
+
+let PORT = process.env.PORT || 5001;
+app.listen(PORT, () => {
+  console.log(`Server is up and running on ${PORT} ...`);
 });
 
-const PORT = process.env.PORT || 3001;
-console.log('server started on port:', PORT);
-app.listen(PORT);
+
+app.post("/login", (req, res) => {
+  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+  let data = {
+    time: Date(),
+    userId: 12,
+  }
+
+  const token = jwt.sign(data, jwtSecretKey);
+  res.send(token);
+  console.log(token);
+});
+
+
+app.get("/login", (req, res) => {
+  let tokenHeaderKey = process.env.TOKEN_HEADER_KEY;
+  let jwtSecretKey = process.env.JWT_SECRET_KEY;
+
+  try {
+    const token = req.header(tokenHeaderKey);
+
+    const verified = jwt.verify(token, jwtSecretKey);
+    if (verified) {
+      return res.send({token});
+    } else {
+      return res.status(401).send(error);
+    }
+  } catch (error) {
+    return res.status(401).send(error);
+  }
+});

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {IconButton, MobileNav, Navbar, Typography,} from "@material-tailwind/react";
 import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 import { motion } from 'framer-motion';
