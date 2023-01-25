@@ -6,6 +6,7 @@ import IonicBonds from "./pages/IonicBonds";
 import CovalentBonds from "./pages/CovalentBonds";
 import Login from "./pages/Login";
 import useToken from "./components/useToken";
+import Bank from "./pages/Bank";
 import {useState} from "react";
 
 export default function App() {
@@ -26,6 +27,7 @@ export default function App() {
             <Route exact path='/ionic-bonds' element={<IonicBonds/>}/>
             <Route exact path='/covalent-bonds' element={<CovalentBonds/>}/>
             <Route exact path='/login' element={<Login token={token} setToken={setToken}/>}/>
+            <Route exact path='/bank' element={<Bank />}/>
           </Routes>
         </div>
       </BrowserRouter>
