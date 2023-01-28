@@ -66,21 +66,15 @@ export default function Quiz() {
     setQuestion(queue[index]);
   }
 
-  const COG = () => {
-    return (
+  return (
+    <>
       <motion.div className={"w-10 mr-[15vw] ml-auto mt-5 cursor-pointer"}
-                  animate={animate} transition={{bounce: 0, duration: 0.4}} onTap={() => {
+                  animate={animate} transition={{bounce: 0, duration: 0.4}} onClick={() => {
         cycle();
         onCycle();
       }}>
         <Cog8ToothIcon className={`w-10 h-10`}/>
       </motion.div>
-    );
-  };
-
-  return (
-    <>
-      <COG/>
       <p>Question: {index + 1} / {queue.length}</p>
       <p>Correct: {correct} / {queue.length}</p>
       <div className={"fixed left-[2%] top-[2%]"}>
