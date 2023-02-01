@@ -3,6 +3,17 @@ const cors = require('cors')
 const fs = require('fs');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
+const { createProxyMiddleware } = require('http-proxy-middleware');
+
+module.exports = function(app) {
+  app.use(
+      '/login',
+      createProxyMiddleware({
+        target: `http://localhost:${server.address().port}`,
+        changeOrigin: true,
+      })
+  );
+};
 
 const app = express();
 app.use(express.json());
@@ -19,9 +30,8 @@ app.get("/bank", (req, res) => {
       .json({ message: "You need to be logged in to access this resource" });
 });
 
-let PORT = process.env.PORT || process.env.PORT;
-app.listen(PORT, () => {
-  console.log(`Server is up and running on ${PORT} ...`);
+const server = app.listen(0, () => {
+  console.log(`App running on Port:`, server.address().port);
 });
 
 let count = 0;
