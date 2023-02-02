@@ -69,7 +69,7 @@ export default function Nav(props) {
 
   return (
       <Navbar className="mx-auto w-[70vw] py-2 px-4 lg:px-8 lg:py-4 bg-slate-900 border-0 rounded-xl">
-        <div className="container mx-auto flex items-center justify-between">
+        <div className="mx-auto flex items-center justify-between">
           <motion.a
               href="../home"
               className="mr-4 cursor-pointer py-1.5 font-bold text-lg"

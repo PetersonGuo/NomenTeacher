@@ -12,7 +12,7 @@ export default function Login(props) {
 
   async function loginUser() {
     let data = {username: username, password: password, remember: remember};
-    return await fetch('http://localhost:5001/login', {
+    return await fetch('/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
