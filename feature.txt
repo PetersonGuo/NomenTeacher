@@ -1,3 +1,4 @@
+Encrypt password/username with bcrypt before sending to backend
 Timer
 Add Questions
 Remove Questions

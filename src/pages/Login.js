@@ -1,29 +1,33 @@
 import {LockClosedIcon} from '@heroicons/react/20/solid';
 import {useState} from 'react';
-import { useNavigate } from "react-router-dom";
-import PropTypes from "prop-types";
+import Cookies from "js-cookie";
 
 export default function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [failed, setFailed] = useState(false);
-  const navigate = useNavigate();
 
   async function loginUser() {
-    let data = {username: username, password: password, remember: remember};
-    return await fetch('/login', {
+    const data = {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
-    }).then(response => {
-      // response.ok ? navigate("/bank"): setFailed(response.ok);
-      console.log(response.json());
-      console.log(response);
-      props.setToken(response.token);
-    });
+      body: JSON.stringify({username: username, password: password, remember: remember})
+    };
+    const promise = await fetch('/login', data)
+        .then((response) => response.json())
+        .then(response => {
+          if (response.ok) {
+            Cookies.set('login', response.token);
+          } else {
+            setFailed(true);
+          }
+          console.log(response.json());
+          console.log(response);
+          props.setToken(response.token);
+        });
   }
 
   const handleSubmit = async e => {
@@ -119,7 +123,3 @@ export default function Login(props) {
       </>
   )
 }
-
-Login.propTypes = {
-  setToken: PropTypes.func.isRequired
-};
