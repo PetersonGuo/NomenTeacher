@@ -1,11 +1,14 @@
 export default function HistorySidebar(props) {
+  console.log(props.history);
   const content = props.history.map((hist, index) => {
     const questionAnswer = hist.answers.find(ans => {
       return ans.isRight
     });
+
     const userAnswer = hist.answers.find(ans => {
       return ans.isClicked
     });
+
     return props.history.length - 6 < index ? (
       <li key={index}>
         <div
@@ -19,6 +22,7 @@ export default function HistorySidebar(props) {
       </li>
     ) : (<></>);
   });
+
   return (
     <aside className="w-64" aria-label="Sidebar">
       <div className="px-3 py-4 overflow-y-auto rounded bg-gray-50 dark:bg-gray-800">

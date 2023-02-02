@@ -8,7 +8,6 @@ import {motion, useCycle} from "framer-motion";
 
 export default function Quiz() {
   const [correct, setCorrect] = useState(0);
-  const [queue, setQueue] = useState([]);
   const [history, setHistory] = useState([]);
   const [index, setIndex] = useState(-1);
   const [question, setQuestion] = useState(getQuestion);
@@ -21,24 +20,30 @@ export default function Quiz() {
       let newAnswers = prevQuestion.answers.map(ans => {
         return ans.id === id ? {...ans, isClicked: true} : ans;
       })
+      {/* Fix This */}
+      setHistory(prevHistory => {
+        return [
+          ...prevHistory,
+          prevQuestion
+        ];
+      })
       return {
         ...prevQuestion,
         answers: newAnswers,
         answered: true
       };
     });
+
   }
 
   function used(q) {
-    for (let i in queue) {
-      if (i.id === q.id) return true;
-    }
+    for (let i in history) if (i.id === q.id) return true;
     return false;
   }
 
   function getQuestion() {
     setIndex(index + 1);
-    if (index === queue.length - 1) {
+    if (index === history.length - 1) {
       const qs = questions.questions;
       let q = qs[qs.length * Math.random() << 0];
       while (used(q)) {
@@ -52,55 +57,44 @@ export default function Quiz() {
         [q.answers[currentIndex], q.answers[randomIndex]] = [q.answers[randomIndex], q.answers[currentIndex]];
       }
 
-      let newQueue = queue;
-      newQueue.push(q);
-      setQueue(newQueue);
       return q;
     } else {
-      return queue[index];
+      return history[index];
     }
   }
 
   function previous() {
     setIndex(index - 1);
-    setQuestion(queue[index]);
+    setQuestion(history[index - 1]);
   }
 
   return (
-    <>
-      <motion.div className={"w-10 mr-[15vw] ml-auto mt-5 cursor-pointer"}
-                  animate={animate} transition={{bounce: 0, duration: 0.4}} onClick={() => {
-        cycle();
-        onCycle();
-      }}>
-        <Cog8ToothIcon className={`w-10 h-10`}/>
-      </motion.div>
-      <p>Question: {index + 1} / {queue.length}</p>
-      <p>Correct: {correct} / {queue.length}</p>
-      <div className={"fixed left-[2%] top-[2%]"}>
-        <HistorySidebar history={history}/>
-      </div>
-      <Prompt question={question} setClicked={setClicked}/>
-      <div className={"fixed left-[50%] bottom-[15%]"}>
-        <div className={"grid grid-cols-2 relative left-[-50%] gap-x-32"}>
-          {index === 0 ? <div/> : <ChevronLeftIcon
-            className={`mx-auto border-2 py-1 px-2 rounded-lg w-60 h-10 cursor-pointer hover:bg-blue-500 border-blue-500`}
-            onClick={() => previous()}/>}
-          {question.answered ? <ChevronRightIcon
-            className={"mx-auto hover:bg-blue-500 py-1 px-2 border-blue-500 rounded-lg border-2 w-60 h-10 cursor-pointer"}
-            onClick={() => {
-                if (index > 0) {
-                  let newHistory = history;
-                  newHistory.push(question);
-                  setHistory(newHistory);
-                  console.log(history);
-                }
-                setQuestion(getQuestion())
-              }
-            }/> : <div/>}
+      <>
+        <motion.div className={"w-10 mr-[15vw] ml-auto mt-5 cursor-pointer"}
+                    animate={animate} transition={{bounce: 0, duration: 0.4}} onClick={() => {
+          cycle();
+          onCycle();
+        }}>
+          <Cog8ToothIcon className={`w-10 h-10`}/>
+        </motion.div>
+        <p>Question: {index + 1} / {history.length + 1}</p>
+        <p>Correct: {correct} / {history.length + 1}</p>
+        <div className={"fixed left-0 top-0"}>
+          {/*<HistorySidebar history={history}/>*/}
         </div>
-      </div>
-      <SettingsSidebar isVisible={isVisible}/>
-    </>
+        <Prompt question={question} setClicked={setClicked}/>
+        <div className={"fixed left-[50%] bottom-[15%]"}>
+          <div className={"grid grid-cols-2 relative left-[-50%] gap-x-32"}>
+            {index === 0 ? <div/> : <ChevronLeftIcon
+                className={`mx-auto border-2 py-1 px-2 rounded-lg w-60 h-10 cursor-pointer hover:bg-blue-500 border-blue-500`}
+                onClick={() => previous()}/>}
+            {question.answered ? <ChevronRightIcon
+                className={"mx-auto hover:bg-blue-500 py-1 px-2 border-blue-500 rounded-lg border-2 w-60 h-10 cursor-pointer"}
+                onClick={() => setQuestion(getQuestion())
+                }/> : <div/>}
+          </div>
+        </div>
+        <SettingsSidebar isVisible={isVisible}/>
+      </>
   );
 }
