@@ -96,7 +96,7 @@ export default function Login(props) {
                 </div>
 
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                  <a href="src/pages#" className="font-medium text-indigo-600 hover:text-indigo-500">
                     Forgot your password?
                   </a>
                 </div>

@@ -1,9 +1,23 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const pino = require('express-pino-logger')();
 const cors = require('cors')
 const fs = require('fs');
 const dotenv = require('dotenv');
 const jwt = require('jsonwebtoken');
 const { createProxyMiddleware } = require('http-proxy-middleware');
+
+const app = express();
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(pino);
+app.use(cors());
+
+dotenv.config();
+
+const server = app.listen(process.env.SERVER_PORT, () => {
+  console.log(`App running on Port:`, server.address().port);
+});
 
 module.exports = function(app) {
   app.use(
@@ -15,23 +29,12 @@ module.exports = function(app) {
   );
 };
 
-const app = express();
-app.use(express.json());
-
-dotenv.config();
-
-app.use(cors());
-
 app.get("/bank", (req, res) => {
   if (res.cookie === jwt.sign({ username: process.env.LOGIN_USERNAME }, process.env.JWT_SECRET_KEY))
     res.status(200).json({message: "Access Granted"});
   res
       .status(401)
       .json({ message: "You need to be logged in to access this resource" });
-});
-
-const server = app.listen(0, () => {
-  console.log(`App running on Port:`, server.address().port);
 });
 
 let count = 0;
