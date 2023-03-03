@@ -8,7 +8,7 @@ import Login from "./pages/Login";
 import useToken from "./components/useToken";
 import Bank from "./pages/Bank";
 import {useState} from "react";
-import Cookies from "js-cookie";
+import jsCookie from "js-cookie";
 
 export default function App() {
   const toggleDarkMode = () => {
@@ -16,13 +16,15 @@ export default function App() {
   };
   const {token, setToken} = useToken();
   const [darkMode, setDarkMode] = useState(true);
+  const [ok, setOk] = useState(true);
   const RequireAuth = ({children}) => {
-    const userIsLogged = Cookies.get('login');; // Hook to get login status
-
-    if (!userIsLogged) {
-      return <Login token={token} setToken={setToken} />
-    }
-    return children;
+    // await fetch('/verify')
+    //     .then(response => {
+    //       setOk(response.ok);
+    //     });
+    setOk(jsCookie.get("login") !== undefined);
+    if (ok) return <Bank />;
+    return <Login token={token} setToken={setToken} />
   };
 
   return (
@@ -37,10 +39,7 @@ export default function App() {
             <Route exact path='/quiz' element={<Quiz/>}/>
             <Route exact path='/ionic-bonds' element={<IonicBonds/>}/>
             <Route exact path='/covalent-bonds' element={<CovalentBonds/>}/>
-            <Route exact path="/bank" element={
-              <RequireAuth>
-                <Bank/>
-              </RequireAuth>}/>
+            <Route exact path="/bank" element={<RequireAuth/>}/>
           </Routes>
         </div>
       </BrowserRouter>

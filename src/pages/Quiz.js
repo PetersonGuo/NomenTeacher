@@ -20,7 +20,6 @@ export default function Quiz() {
       let newAnswers = prevQuestion.answers.map(ans => {
         return ans.id === id ? {...ans, isClicked: true} : ans;
       })
-      {/* Fix This */}
       setHistory(prevHistory => {
         return [
           ...prevHistory,
@@ -56,7 +55,6 @@ export default function Quiz() {
         currentIndex--;
         [q.answers[currentIndex], q.answers[randomIndex]] = [q.answers[randomIndex], q.answers[currentIndex]];
       }
-
       return q;
     } else {
       return history[index];
@@ -64,7 +62,9 @@ export default function Quiz() {
   }
 
   function previous() {
-    setIndex(index - 1);
+    setIndex(index-1);
+    if (history[history.length-1] !== question && index === history.length) history.push(question);
+    history[index-1].answered = true;
     setQuestion(history[index - 1]);
   }
 

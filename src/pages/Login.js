@@ -16,15 +16,15 @@ export default function Login(props) {
       },
       body: JSON.stringify({username: username, password: password, remember: remember})
     };
-    const promise = await fetch('/login', data)
-        .then((response) => response.json())
+    await fetch('/login', data)
         .then(response => {
           if (response.ok) {
             Cookies.set('login', response.token);
           } else {
             setFailed(true);
           }
-          console.log(response.json());
+          const promise = response.json();
+          console.log(promise);
           console.log(response);
           props.setToken(response.token);
         });
