@@ -1,15 +1,16 @@
 import {LockClosedIcon} from '@heroicons/react/20/solid';
 import {useRef, useState} from 'react';
 import bcrypt from 'bcryptjs-react';
-import { auth } from '../firebase-config';
-import { signInWithEmailAndPassword } from "firebase/auth";
+import {auth} from '../firebase-config';
+import {signInWithEmailAndPassword} from "firebase/auth";
 
 export default function Login(props) {
   const [remember, setRemember] = useState(false);
-  const [failed, setFailed] = useState(false);
   const [signIn, setSignIn] = useState(true);
+  const [warn, setWarn] = useState("");
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
+  const passwordConfirmationInputRef = useRef();
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -23,10 +24,24 @@ export default function Login(props) {
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            setFailed(true);
+            setWarn("Authentication Failed: Incorrect Username or Password");
           });
     } else {
       const salt = bcrypt.genSaltSync(10);
+      if (passwordInputRef !== passwordConfirmationInputRef) setWarn("Passwords do not match");
+      else if (passwordInputRef < 8) setWarn("Password must be at least 8 characters");
+      else {
+        auth.createUserWithEmailAndPassword(bcrypt.hashSync(emailInputRef.current.value + process.env.REACT_APP_PEPPER, salt),
+            bcrypt.hashSync(passwordInputRef.current.value + process.env.REACT_APP_PEPPER, salt))
+            .then((userCredential) => {
+              const user = userCredential.user;
+              alert("Welcome" + user);
+            })
+            .catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+            });
+      }
     }
   }
 
@@ -44,17 +59,12 @@ export default function Login(props) {
                 {signIn ? "Sign in to your account" : "Create an account"}
               </h2>
             </div>
-            {failed ? <p className={"text-red-700"}>Authentication Failed: Incorrect Username or Password</p> : <></>}
+            <p className={"text-red-700"}>{warn}</p>
             <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
               <input type="hidden" name="remember" defaultValue="true"/>
               <div className="-space-y-px rounded-md shadow-sm">
                 <div>
-                  <label htmlFor="email" className="sr-only">
-                    Email address
-                  </label>
                   <input
-                      id="email"
-                      name="user"
                       type="email"
                       autoComplete="user"
                       ref={emailInputRef}
@@ -64,22 +74,27 @@ export default function Login(props) {
                   />
                 </div>
                 <div>
-                  <label htmlFor="password" className="sr-only">
-                    Password
-                  </label>
                   <input
-                      id="password"
-                      name="password"
                       type="password"
-                      autoComplete="current-password"
                       ref={passwordInputRef}
                       required
                       className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       placeholder="Password"
                   />
                 </div>
+                {!signIn ?
+                    <div>
+                      <input
+                          type="password"
+                          ref={passwordConfirmationInputRef}
+                          required
+                          className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                          placeholder="Confirm Password"
+                      />
+                    </div> : <></>}
               </div>
 
+              {signIn ?
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   <input
@@ -99,7 +114,7 @@ export default function Login(props) {
                     Forgot your password?
                   </a>
                 </div>
-              </div>
+              </div> : <></>}
 
               <div>
                 <button
