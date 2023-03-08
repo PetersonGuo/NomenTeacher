@@ -1,38 +1,30 @@
 import {LockClosedIcon} from '@heroicons/react/20/solid';
-import {useState} from 'react';
-import Cookies from "js-cookie";
+import {useRef, useState} from 'react';
+import bcrypt from 'bcryptjs-react';
+import { auth } from '../firebase-config';
+import { signInWithEmailAndPassword } from "firebase/auth";
 
 export default function Login(props) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [failed, setFailed] = useState(false);
-
-  async function loginUser() {
-    const data = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({username: username, password: password, remember: remember})
-    };
-    await fetch('/login', data)
-        .then(response => {
-          if (response.ok) {
-            Cookies.set('login', response.token);
-          } else {
-            setFailed(true);
-          }
-          const promise = response.json();
-          console.log(promise);
-          console.log(response);
-          props.setToken(response.token);
-        });
-  }
+  const [signIn, setSignIn] = useState(true);
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+  const salt = bcrypt.genSaltSync(10)
 
   const handleSubmit = async e => {
     e.preventDefault();
-    await loginUser();
+
+    signInWithEmailAndPassword(auth, bcrypt.hashSync(emailInputRef.current.value + process.env.REACT_APP_PEPPER, ),
+        bcrypt.hashSync(passwordInputRef.current.value + process.env.REACT_APP_PEPPER, ))
+        .then((userCredential) => {
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          setFailed(true);
+        });
   }
 
   return (
@@ -46,7 +38,7 @@ export default function Login(props) {
                   alt="Your Company"
               />
               <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-white">
-                Sign in to your account
+                {signIn ? "Sign in to your account" : "Create an account"}
               </h2>
             </div>
             {failed ? <p className={"text-red-700"}>Authentication Failed: Incorrect Username or Password</p> : <></>}
@@ -54,18 +46,18 @@ export default function Login(props) {
               <input type="hidden" name="remember" defaultValue="true"/>
               <div className="-space-y-px rounded-md shadow-sm">
                 <div>
-                  <label htmlFor="username" className="sr-only">
+                  <label htmlFor="email" className="sr-only">
                     Email address
                   </label>
                   <input
-                      id="username"
+                      id="email"
                       name="user"
-                      type="text"
+                      type="email"
                       autoComplete="user"
+                      ref={emailInputRef}
                       required
                       className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
-                      placeholder="Username"
-                      onChange={e => setUsername(e.target.value)}
+                      placeholder="Email"
                   />
                 </div>
                 <div>
@@ -77,10 +69,10 @@ export default function Login(props) {
                       name="password"
                       type="password"
                       autoComplete="current-password"
+                      ref={passwordInputRef}
                       required
                       className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       placeholder="Password"
-                      onChange={e => setPassword(e.target.value)}
                   />
                 </div>
               </div>
@@ -114,7 +106,13 @@ export default function Login(props) {
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true"/>
                 </span>
-                  Sign in
+                  {signIn ? "Sign in" : "Create Account"}
+                </button>
+                <button
+                    className="group relative flex w-full justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white hover:text-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    onClick={() => setSignIn(!signIn)}
+                >
+                  {signIn ? "Create Account" : "Sign in"}
                 </button>
               </div>
             </form>

@@ -5,27 +5,28 @@ import Quiz from "./pages/Quiz";
 import IonicBonds from "./pages/IonicBonds";
 import CovalentBonds from "./pages/CovalentBonds";
 import Login from "./pages/Login";
-import useToken from "./components/useToken";
 import Bank from "./pages/Bank";
 import {useState} from "react";
-import jsCookie from "js-cookie";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase-config";
 
 export default function App() {
-  const toggleDarkMode = () => {
-    setDarkMode(prevDarkMode => !prevDarkMode)
+  const [darkMode, setDarkMode] = useState(false);
+  const toggleDarkMode = () => {setDarkMode(!darkMode)};
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  const RequireAuth = () => {
+    if (loggedIn) return <Bank/>;
+    return <Login />
   };
-  const {token, setToken} = useToken();
-  const [darkMode, setDarkMode] = useState(true);
-  const [ok, setOk] = useState(true);
-  const RequireAuth = ({children}) => {
-    // await fetch('/verify')
-    //     .then(response => {
-    //       setOk(response.ok);
-    //     });
-    setOk(jsCookie.get("login") !== undefined);
-    if (ok) return <Bank />;
-    return <Login token={token} setToken={setToken} />
-  };
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  });
 
   return (
       <BrowserRouter>
