@@ -1,45 +1,49 @@
 import {LockClosedIcon} from '@heroicons/react/20/solid';
-import {useRef, useState} from 'react';
+import {useState} from 'react';
 import bcrypt from 'bcryptjs-react';
 import {auth} from '../firebase-config';
-import {signInWithEmailAndPassword} from "firebase/auth";
+import {signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
+import {setDoc, doc, getDoc, getFirestore} from "firebase/firestore";
+// import {GoogleLogin} from "@react-oauth/google";
 
-export default function Login(props) {
-  const [remember, setRemember] = useState(false);
+const db = getFirestore();
+export default function Login() {
+  // const [remember, setRemember] = useState(false);
   const [signIn, setSignIn] = useState(true);
   const [warn, setWarn] = useState("");
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
-  const passwordConfirmationInputRef = useRef();
-
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [passwordConfirmation, setPasswordConfirmation] = useState();
   const handleSubmit = async e => {
     e.preventDefault();
+    const salt = signIn ? await getDoc(doc(db, "users", email)).salt : bcrypt.genSaltSync(10);
+    const hashedPassword = bcrypt.hashSync(password + process.env.REACT_APP_PEPPER, salt);
     if (signIn) {
-      signInWithEmailAndPassword(auth, bcrypt.hashSync(emailInputRef.current.value + process.env.REACT_APP_PEPPER,),
-          bcrypt.hashSync(passwordInputRef.current.value + process.env.REACT_APP_PEPPER,))
+      signInWithEmailAndPassword(auth, email, hashedPassword)
           .then((userCredential) => {
-            const user = userCredential.user;
-            alert("Welcome" + user);
+            alert("Welcome " + userCredential.user.displayName);
           })
           .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            setWarn("Authentication Failed: Incorrect Username or Password");
+            console.error(errorCode);
+            setWarn(errorMessage);
           });
     } else {
-      const salt = bcrypt.genSaltSync(10);
-      if (passwordInputRef !== passwordConfirmationInputRef) setWarn("Passwords do not match");
-      else if (passwordInputRef < 8) setWarn("Password must be at least 8 characters");
+      if (password !== passwordConfirmation) setWarn("Passwords do not match");
+      else if (password < 8) setWarn("Password must be at least 8 characters");
       else {
-        auth.createUserWithEmailAndPassword(bcrypt.hashSync(emailInputRef.current.value + process.env.REACT_APP_PEPPER, salt),
-            bcrypt.hashSync(passwordInputRef.current.value + process.env.REACT_APP_PEPPER, salt))
-            .then((userCredential) => {
+        createUserWithEmailAndPassword(auth, email, hashedPassword)
+            .then(async (userCredential) => {
+              await setDoc(doc(db, "users", email), {salt: salt});
               const user = userCredential.user;
               alert("Welcome" + user);
             })
             .catch((error) => {
               const errorCode = error.code;
               const errorMessage = error.message;
+              console.error(errorCode);
+              setWarn(errorMessage);
             });
       }
     }
@@ -60,14 +64,14 @@ export default function Login(props) {
               </h2>
             </div>
             <p className={"text-red-700"}>{warn}</p>
-            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            <form className="mt-8 space-y-6">
               <input type="hidden" name="remember" defaultValue="true"/>
               <div className="-space-y-px rounded-md shadow-sm">
                 <div>
                   <input
                       type="email"
                       autoComplete="user"
-                      ref={emailInputRef}
+                      onChange={(e) => {setEmail(e.target.value)}}
                       required
                       className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       placeholder="Email"
@@ -76,7 +80,7 @@ export default function Login(props) {
                 <div>
                   <input
                       type="password"
-                      ref={passwordInputRef}
+                      onChange={(e) => {setPassword(e.target.value)}}
                       required
                       className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       placeholder="Password"
@@ -86,7 +90,7 @@ export default function Login(props) {
                     <div>
                       <input
                           type="password"
-                          ref={passwordConfirmationInputRef}
+                          onChange={(e) => {setPasswordConfirmation(e.target.value)}}
                           required
                           className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                           placeholder="Confirm Password"
@@ -95,31 +99,19 @@ export default function Login(props) {
               </div>
 
               {signIn ?
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
-                  <input
-                      id="remember-me"
-                      name="remember-me"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                      onChange={e => setRemember(e.target.checked)}
-                  />
-                  <label htmlFor="remember-me" className="ml-2 block text-sm text-white">
-                    Remember me
-                  </label>
-                </div>
-
-                <div className="text-sm">
-                  <a href="src/pages#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                    Forgot your password?
-                  </a>
-                </div>
-              </div> : <></>}
+                  <div className="flex items-center justify-end">
+                    <div className="text-sm">
+                      <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
+                        Forgot your password?
+                      </a>
+                    </div>
+                  </div> : <></>}
 
               <div>
                 <button
                     type="submit"
                     className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                    onClick={handleSubmit}
                 >
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">
                   <LockClosedIcon className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400" aria-hidden="true"/>
@@ -127,8 +119,11 @@ export default function Login(props) {
                   {signIn ? "Sign in" : "Create Account"}
                 </button>
                 <button
-                    className="group relative flex w-full justify-center rounded-md border border-transparent bg-slate-800 py-2 px-4 text-sm font-medium text-white hover:text-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    onClick={() => setSignIn(!signIn)}
+                    className="group relative flex w-full justify-center rounded-md border border-transparent bg-slate-800 my-2 text-sm font-medium text-white hover:text-indigo-400"
+                    onClick={() => {
+                      setSignIn(!signIn);
+                      setWarn("");
+                    }}
                 >
                   {signIn ? "Create Account" : "Sign in"}
                 </button>
@@ -136,6 +131,9 @@ export default function Login(props) {
             </form>
           </div>
         </div>
+        {/*<div className="fixed flex items-center justify-center">*/}
+        {/*  <GoogleLogin onSuccess={(e) => console.error(e)} onError={(e) => console.error(e)}/>*/}
+        {/*</div>*/}
       </>
   )
 }
