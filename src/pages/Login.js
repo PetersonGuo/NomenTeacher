@@ -10,21 +10,24 @@ export default function Login(props) {
   const [signIn, setSignIn] = useState(true);
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
-  const salt = bcrypt.genSaltSync(10)
 
   const handleSubmit = async e => {
     e.preventDefault();
-
-    signInWithEmailAndPassword(auth, bcrypt.hashSync(emailInputRef.current.value + process.env.REACT_APP_PEPPER, ),
-        bcrypt.hashSync(passwordInputRef.current.value + process.env.REACT_APP_PEPPER, ))
-        .then((userCredential) => {
-          const user = userCredential.user;
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-          setFailed(true);
-        });
+    if (signIn) {
+      signInWithEmailAndPassword(auth, bcrypt.hashSync(emailInputRef.current.value + process.env.REACT_APP_PEPPER,),
+          bcrypt.hashSync(passwordInputRef.current.value + process.env.REACT_APP_PEPPER,))
+          .then((userCredential) => {
+            const user = userCredential.user;
+            alert("Welcome" + user);
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setFailed(true);
+          });
+    } else {
+      const salt = bcrypt.genSaltSync(10);
+    }
   }
 
   return (
