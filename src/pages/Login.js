@@ -1,25 +1,26 @@
 import {LockClosedIcon} from '@heroicons/react/20/solid';
-import {useState} from 'react';
+import {useState, useRef} from 'react';
 import bcrypt from 'bcryptjs-react';
-import {auth} from '../firebase-config';
+import {auth, app} from '../firebase-config';
 import {signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
-import {setDoc, doc, getDoc, getFirestore} from "firebase/firestore";
+import {setDoc, doc, collection, getFirestore, where, query} from "firebase/firestore";
 // import {GoogleLogin} from "@react-oauth/google";
 
-const db = getFirestore();
+const db = getFirestore(app);
 export default function Login() {
   // const [remember, setRemember] = useState(false);
-  const [signIn, setSignIn] = useState(true);
-  const [warn, setWarn] = useState("");
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [passwordConfirmation, setPasswordConfirmation] = useState();
+  const [signIn, setSignIn] = useState(true),
+        [warn, setWarn] = useState("");
+  const password = useRef(null),
+        passwordConfirmation = useRef(null),
+        email = useRef(null);
   const handleSubmit = async e => {
     e.preventDefault();
-    const salt = signIn ? await getDoc(doc(db, "users", email)).salt : bcrypt.genSaltSync(10);
-    const hashedPassword = bcrypt.hashSync(password + process.env.REACT_APP_PEPPER, salt);
+    const salt = signIn ? await query(collection(db, "users"), where("Document ID", "==", email.current.value)).salt : bcrypt.genSaltSync(10);
+    console.log(salt);
+    const hashedPassword = bcrypt.hashSync(password.current.value + process.env.REACT_APP_PEPPER, salt);
     if (signIn) {
-      signInWithEmailAndPassword(auth, email, hashedPassword)
+      signInWithEmailAndPassword(auth, email.current.value, hashedPassword)
           .then((userCredential) => {
             alert("Welcome " + userCredential.user.displayName);
           })
@@ -30,12 +31,13 @@ export default function Login() {
             setWarn(errorMessage);
           });
     } else {
-      if (password !== passwordConfirmation) setWarn("Passwords do not match");
-      else if (password < 8) setWarn("Password must be at least 8 characters");
+      if (password.current.value !== passwordConfirmation.current.value) setWarn("Passwords do not match");
+      else if (password.current.value.length < 8) setWarn("Password must be at least 8 characters");
       else {
-        createUserWithEmailAndPassword(auth, email, hashedPassword)
+        createUserWithEmailAndPassword(auth, email.current.value, hashedPassword)
             .then(async (userCredential) => {
-              await setDoc(doc(db, "users", email), {salt: salt});
+              await setDoc(doc(db, "users", email.current.value), {salt: salt});
+              console.log("here");
               const user = userCredential.user;
               alert("Welcome" + user);
             })
@@ -43,6 +45,7 @@ export default function Login() {
               const errorCode = error.code;
               const errorMessage = error.message;
               console.error(errorCode);
+              console.log(errorMessage);
               setWarn(errorMessage);
             });
       }
@@ -71,7 +74,7 @@ export default function Login() {
                   <input
                       type="email"
                       autoComplete="user"
-                      onChange={(e) => {setEmail(e.target.value)}}
+                      ref={email}
                       required
                       className="relative block w-full appearance-none rounded-none rounded-t-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       placeholder="Email"
@@ -80,7 +83,7 @@ export default function Login() {
                 <div>
                   <input
                       type="password"
-                      onChange={(e) => {setPassword(e.target.value)}}
+                      ref={password}
                       required
                       className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                       placeholder="Password"
@@ -90,7 +93,7 @@ export default function Login() {
                     <div>
                       <input
                           type="password"
-                          onChange={(e) => {setPasswordConfirmation(e.target.value)}}
+                          ref={passwordConfirmation}
                           required
                           className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
                           placeholder="Confirm Password"
@@ -122,6 +125,8 @@ export default function Login() {
                     className="group relative flex w-full justify-center rounded-md border border-transparent bg-slate-800 my-2 text-sm font-medium text-white hover:text-indigo-400"
                     onClick={() => {
                       setSignIn(!signIn);
+                      password.current.value = null;
+                      passwordConfirmation.current.value = null;
                       setWarn("");
                     }}
                 >
