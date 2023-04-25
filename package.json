@@ -2,6 +2,7 @@
   "name": "nomen-teacher-template",
   "version": "0.1.0",
   "private": true,
+  "proxy": "http://localhost:3001",
   "dependencies": {
     "@heroicons/react": "^2.0.13",
     "@material-tailwind/react": "^1.2.5",
@@ -12,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "bcryptjs-react": "^2.4.6",
     "bootstrap": "^5.2.3",
+    "express-openid-connect": "^2.14.0",
     "firebase": "^9.17.2",
     "firebaseui": "^6.0.2",
     "framer-motion": "^8.5.0",
@@ -26,7 +28,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "server": "node server --exec nodemon",
+    "server": "node backend --exec nodemon",
     "dev": "npm run server & npm start"
   },
   "eslintConfig": {

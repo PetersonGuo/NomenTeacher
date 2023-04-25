@@ -1,5 +1,5 @@
 import Nav from "./components/Nav";
-import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
+import {BrowserRouter, Navigate, Route, Routes, useNavigate} from 'react-router-dom';
 import Home from "./pages/Home";
 import Quiz from "./pages/Quiz";
 import IonicBonds from "./pages/IonicBonds";
@@ -14,10 +14,11 @@ export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const toggleDarkMode = () => {setDarkMode(!darkMode)};
   const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   const RequireAuth = () => {
-    if (loggedIn) return <Bank/>;
-    return <Login />
+    if (loggedIn) navigate('/login');
+    else return <Bank/>;
   };
 
   onAuthStateChanged(auth, (user) => {

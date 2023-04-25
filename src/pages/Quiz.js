@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import Prompt from "../components/Prompt";
 import SettingsSidebar from "../components/SettingsSidebar";
 import HistorySidebar from "../components/HistorySidebar";
@@ -20,12 +20,6 @@ export default function Quiz() {
       let newAnswers = prevQuestion.answers.map(ans => {
         return ans.id === id ? {...ans, isClicked: true} : ans;
       })
-      // setHistory(prevHistory => {
-      //   return [
-      //     ...prevHistory,
-      //     prevQuestion
-      //   ];
-      // })
       createNewQuestion();
       return {
         ...prevQuestion,
@@ -36,27 +30,15 @@ export default function Quiz() {
 
   }
 
-  // function used(q) {
-  //   for (let i in history) if (i.id === q.id) return true;
-  //   return false;
-  // }
-
   function getQuestion() {
     return history[index];
   }
 
   function copy(aObject) {
-    // Prevent undefined objects
-    // if (!aObject) return aObject;
-
     let bObject = Array.isArray(aObject) ? [] : {};
 
     let value;
     for (const key in aObject) {
-
-      // Prevent self-references to parent object
-      // if (Object.is(aObject[key], aObject)) continue;
-
       value = aObject[key];
 
       bObject[key] = (typeof value === "object") ? copy(value) : value;
@@ -66,19 +48,6 @@ export default function Quiz() {
   }
 
   function createNewQuestion(){
-    // const qs = questions.questions;
-    // let q = qs[qs.length * Math.random() << 0];
-    // while (used(q)) {
-    //   q = qs[qs.length * Math.random() << 0];
-    // }
-    // q.answered = false;
-    // let currentIndex = q.answers.length, randomIndex;
-    // while (currentIndex !== 0) {
-    //   randomIndex = Math.floor(Math.random() * currentIndex);
-    //   currentIndex--;
-    //   [q.answers[currentIndex], q.answers[randomIndex]] = [q.answers[randomIndex], q.answers[currentIndex]];
-    // }
-
     const qs = questions.questions;
     let qOriginal = qs[Math.floor(Math.random()*qs.length)];
     let qCopy = copy(qOriginal);
@@ -116,7 +85,6 @@ export default function Quiz() {
         <p>Question: {index + 1} / {history.length}</p>
         <p>Correct: {correct} / {history.length - 1}</p>
         <div className={"fixed left-0 top-0"}>
-          {/*<HistorySidebar history={history}/>*/}
         </div>
         <Prompt question={question} setClicked={setClicked}/>
         <div className={"fixed left-[50%] bottom-[15%]"}>

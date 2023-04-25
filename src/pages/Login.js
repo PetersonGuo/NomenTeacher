@@ -1,8 +1,6 @@
 import {LockClosedIcon} from '@heroicons/react/20/solid';
 import {useState, useRef} from 'react';
-import bcrypt from 'bcryptjs-react';
 import {auth, app} from '../firebase-config';
-import {signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
 import {setDoc, doc, collection, getFirestore, where, query} from "firebase/firestore";
 // import {GoogleLogin} from "@react-oauth/google";
 
@@ -16,40 +14,45 @@ export default function Login() {
         email = useRef(null);
   const handleSubmit = async e => {
     e.preventDefault();
-    const salt = signIn ? await query(collection(db, "users"), where("Document ID", "==", email.current.value)).salt : bcrypt.genSaltSync(10);
-    console.log(salt);
-    const hashedPassword = bcrypt.hashSync(password.current.value + process.env.REACT_APP_PEPPER, salt);
-    if (signIn) {
-      signInWithEmailAndPassword(auth, email.current.value, hashedPassword)
-          .then((userCredential) => {
-            alert("Welcome " + userCredential.user.displayName);
-          })
-          .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.error(errorCode);
-            setWarn(errorMessage);
-          });
-    } else {
-      if (password.current.value !== passwordConfirmation.current.value) setWarn("Passwords do not match");
-      else if (password.current.value.length < 8) setWarn("Password must be at least 8 characters");
-      else {
-        createUserWithEmailAndPassword(auth, email.current.value, hashedPassword)
-            .then(async (userCredential) => {
-              await setDoc(doc(db, "users", email.current.value), {salt: salt});
-              console.log("here");
-              const user = userCredential.user;
-              alert("Welcome" + user);
-            })
-            .catch((error) => {
-              const errorCode = error.code;
-              const errorMessage = error.message;
-              console.error(errorCode);
-              console.log(errorMessage);
-              setWarn(errorMessage);
-            });
-      }
-    }
+
+    fetch("/login").then(res => {
+      console.log(res);
+});
+
+    // const salt = signIn ? await query(collection(db, "users"), where("Document ID", "==", email.current.value)).salt : bcrypt.genSaltSync(10);
+    // console.log(salt);
+    // const hashedPassword = bcrypt.hashSync(password.current.value + process.env.REACT_APP_PEPPER, salt);
+    // if (signIn) {
+    //   signInWithEmailAndPassword(auth, email.current.value, hashedPassword)
+    //       .then((userCredential) => {
+    //         alert("Welcome " + userCredential.user.displayName);
+    //       })
+    //       .catch((error) => {
+    //         const errorCode = error.code;
+    //         const errorMessage = error.message;
+    //         console.error(errorCode);
+    //         setWarn(errorMessage);
+    //       });
+    // } else {
+    //   if (password.current.value !== passwordConfirmation.current.value) setWarn("Passwords do not match");
+    //   else if (password.current.value.length < 8) setWarn("Password must be at least 8 characters");
+    //   else {
+    //     createUserWithEmailAndPassword(auth, email.current.value, hashedPassword)
+    //         .then(async (userCredential) => {
+    //           await setDoc(doc(db, "users", email.current.value), {salt: salt});
+    //           console.log("here");
+    //           const user = userCredential.user;
+    //           alert("Welcome" + user);
+    //         })
+    //         .catch((error) => {
+    //           const errorCode = error.code;
+    //           const errorMessage = error.message;
+    //           console.error(errorCode);
+    //           console.log(errorMessage);
+    //           setWarn(errorMessage);
+    //         });
+    //   }
+    // }
   }
 
   return (
