@@ -1,5 +1,6 @@
 const { auth } = require('express-openid-connect');
 const express = require('express');
+const { requiresAuth } = require('express-openid-connect');
 require('dotenv').config();
 
 const secret = process.env.REACT_APP_PEPPER;
@@ -9,8 +10,8 @@ const config = {
   auth0Logout: true,
   secret: secret,
   baseURL: 'http://localhost:3000',
-  clientID: process.env.CLIENT_ID,
-  issuerBaseURL: process.env.AUTH0_DOMAIN,
+  clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
+  issuerBaseURL: process.env.REACT_APP_AUTH0_DOMAIN,
 };
 
 const PORT = 3001;
@@ -26,3 +27,7 @@ app.get('/', (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+
+app.get('/bank', requiresAuth(), (req, res) => {
+  res.send(JSON.stringify(req.oidc.user));
+});
