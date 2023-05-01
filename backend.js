@@ -3,12 +3,10 @@ const express = require('express');
 const { requiresAuth } = require('express-openid-connect');
 require('dotenv').config();
 
-const secret = process.env.REACT_APP_PEPPER;
-
 const config = {
   authRequired: false,
   auth0Logout: true,
-  secret: secret,
+  secret: process.env.REACT_APP_PEPPER,
   baseURL: 'http://localhost:3000',
   clientID: process.env.REACT_APP_AUTH0_CLIENT_ID,
   issuerBaseURL: process.env.REACT_APP_AUTH0_DOMAIN,

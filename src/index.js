@@ -4,16 +4,20 @@ import './index.css';
 import App from './App';
 import {GoogleOAuthProvider} from '@react-oauth/google';
 import {BrowserRouter} from "react-router-dom";
-import Auth from "./components/Auth";
+import {Auth0Provider} from "@auth0/auth0-react";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
       <React.StrictMode>
         <BrowserRouter>
-          <Auth>
+          <Auth0Provider
+              domain={process.env.REACT_APP_AUTH0_DOMAIN}
+              clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
+              authorizationParams={{redirect_uri: window.location.origin + window.location.pathname}}
+          >
             <App/>
-          </Auth>
+          </Auth0Provider>
         </BrowserRouter>
       </React.StrictMode>
     </GoogleOAuthProvider>

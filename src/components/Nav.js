@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {IconButton, MobileNav, Navbar, Typography,} from "@material-tailwind/react";
-import { SunIcon, MoonIcon } from '@heroicons/react/24/outline'
+import { HiSun, HiMoon } from "react-icons/hi";
 import { motion } from 'framer-motion';
 
 export default function Nav(props) {
@@ -62,7 +62,7 @@ export default function Nav(props) {
         </Typography>
         <div className="cursor-pointer sm:hidden md:block lg:block" style={{marginRight: 0}}
              onClick={props.toggleDarkMode}>
-          {props.darkMode ? <MoonIcon className="text-white"/> : <SunIcon className={"text-black"}/>}
+          {props.darkMode ? <HiMoon className="text-blue-700" size={30}/> : <HiSun className={"text-white"} size={30}/>}
         </div>
       </ul>
   );
@@ -74,7 +74,7 @@ export default function Nav(props) {
               href="../home"
               className="mr-4 cursor-pointer py-1.5 font-bold text-lg"
               whileHover={{scale: 1.1}}
-              transition={{bounce: 0}}
+              transition={{bounceHome: 0}}
           >
             <span className="text-black dark:text-white">NomenTeacher</span>
           </motion.a>

@@ -5,29 +5,31 @@ import Quiz from "./pages/Quiz";
 import IonicBonds from "./pages/IonicBonds";
 import CovalentBonds from "./pages/CovalentBonds";
 import Bank from "./pages/Bank";
-import ProtectedRoute from "./components/ProtectedRoute";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
-  const toggleDarkMode = () => {setDarkMode(!darkMode)};
-  const [loggedIn, setLoggedIn] = useState(false);
+  const toggleDarkMode = () => setDarkMode(!darkMode);
+  useEffect(() => {
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.getElementById('dark').classList.add('dark')
+    else document.getElementById('root').classList.remove('dark')
+  }, []);
 
   return (
-        <div className={`h-screen w-screen overflow-x-hidden`}>
-          <div className="py-4">
-            <Nav darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
-          </div>
-          <Routes>
-            <Route exact path='/' element={<Home/>}/>
-            <Route exact path='/home' element={<Home/>}/>
-            <Route exact path='/quiz' element={<Quiz/>}/>
-            <Route exact path='/ionic-bonds' element={<IonicBonds/>}/>
-            <Route exact path='/covalent-bonds' element={<CovalentBonds/>}/>
-            <Route exact path='/bank' element={<ProtectedRoute/>}>
-              <Route exact path="/bank" element={<Bank/>}/>
-            </Route>
-          </Routes>
+        <div className={`h-screen w-screen overflow-x-hidden ${darkMode ? "dark" : ""}`}>
+            <div className={"w-[100%] h-[100%] dark:bg-gray-700 bg-white"}>
+              <div className="py-4">
+                <Nav darkMode={darkMode} toggleDarkMode={toggleDarkMode}/>
+              </div>
+              <Routes>
+                <Route exact path='/' element={<Home/>}/>
+                <Route exact path='/home' element={<Home/>}/>
+                <Route exact path='/quiz' element={<Quiz/>}/>
+                <Route exact path='/ionic-bonds' element={<IonicBonds/>}/>
+                <Route exact path='/covalent-bonds' element={<CovalentBonds/>}/>
+                <Route exact path="/bank" element={<Bank/>}/>
+              </Routes>
+            </div>
         </div>
   );
 }
