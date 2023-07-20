@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Prompt from "../components/Prompt";
 import SettingsSidebar from "../components/SettingsSidebar";
 import {db} from "../firebase-config";
@@ -12,13 +12,30 @@ export default function Quiz() {
     return querySnapshot.docs.map(doc => doc.data());
   }
 
-  const [questions, setQuestions] = useState(getQuestions());
+  const [error, setError] = useState(false);
+  const [state, setState] = useState('loading');
+  const [questions, setQuestions] = useState([]);
+  const [history, setHistory] = useState([]);
   const [correct, setCorrect] = useState(0);
-  const [history, setHistory] = useState([copy(questions[0/*Math.floor(Math.random()*questions.length)*/])]);
   const [index, setIndex] = useState(0);
   const [question, setQuestion] = useState(getQuestion());
   const [isVisible, onCycle] = useCycle(false, true);
   const [animate, cycle] = useCycle({rotate: 180}, {rotate: -180});
+
+  useEffect(() => {
+    getQuestions().then(data => {
+      console.log(data);
+      addHistory(data[Math.floor(Math.random()*data.length)]);
+      setQuestions(data);
+      setState('loaded');
+    }).catch(err => {
+      setError(true);
+      setState('error');
+    });
+  }, []);
+
+  if (state === 'loading') return <div className={"text-3xl font-bold text-center"}>Loading...</div>
+  else if (state === 'error') return <div className={"text-3xl font-bold text-center"}>Error loading questions</div>
 
   function setClicked(id) {
     setQuestion(prevQuestion => {
@@ -53,18 +70,19 @@ export default function Quiz() {
     return bObject;
   }
 
-  function createNewQuestion(){
-    const qs = questions;
-    console.log(qs);
-    let qOriginal = qs[Math.floor(Math.random()*qs.length)];
-    let qCopy = copy(qOriginal);
+  function addHistory(question) {
     setHistory(prevHistory => {
-      return [
-        ...prevHistory,
-        qCopy
-      ];
+        return [
+            ...prevHistory,
+            question
+        ];
     })
   }
+
+  function createNewQuestion(){
+    addHistory(copy(questions[Math.floor(Math.random()*questions.length)]))
+  }
+
   function previousQ() {
     setIndex(index-1);
     history[index-1].answered = true;

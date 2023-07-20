@@ -1,6 +1,7 @@
 import Answer from "./Answer";
 
 export default function Prompt(props) {
+    console.log(props.question);
   const answersElement = props.question.answers.map(ans => {
     return (
         <Answer
