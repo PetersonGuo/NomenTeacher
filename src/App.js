@@ -4,14 +4,13 @@ import Home from "./pages/Home";
 import Quiz from "./pages/Quiz";
 import IonicBonds from "./pages/IonicBonds";
 import CovalentBonds from "./pages/CovalentBonds";
-import Bank from "./pages/Bank";
 import {useEffect, useState} from "react";
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(false);
   const toggleDarkMode = () => setDarkMode(!darkMode);
   useEffect(() => {
-    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.getElementById('dark').classList.add('dark')
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) document.getElementById('root').classList.add('dark')
     else document.getElementById('root').classList.remove('dark')
   }, []);
 
@@ -27,7 +26,6 @@ export default function App() {
                 <Route exact path='/quiz' element={<Quiz/>}/>
                 <Route exact path='/ionic-bonds' element={<IonicBonds/>}/>
                 <Route exact path='/covalent-bonds' element={<CovalentBonds/>}/>
-                <Route exact path="/bank" element={<Bank/>}/>
               </Routes>
             </div>
         </div>

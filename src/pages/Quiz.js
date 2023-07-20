@@ -1,14 +1,20 @@
 import {useState} from 'react';
 import Prompt from "../components/Prompt";
 import SettingsSidebar from "../components/SettingsSidebar";
-import HistorySidebar from "../components/HistorySidebar";
-import questions from '../questions.json';
+import {db} from "../firebase-config";
+import {collection, getDocs} from "firebase/firestore";
 import {ChevronLeftIcon, ChevronRightIcon, Cog8ToothIcon} from "@heroicons/react/24/outline";
 import {motion, useCycle} from "framer-motion";
 
 export default function Quiz() {
+  async function getQuestions() {
+    const querySnapshot = await getDocs(collection(db, "questions"));
+    return querySnapshot.docs.map(doc => doc.data());
+  }
+
+  const [questions, setQuestions] = useState(getQuestions());
   const [correct, setCorrect] = useState(0);
-  const [history, setHistory] = useState([copy(questions.questions[Math.floor(Math.random()*questions.questions.length)])]);
+  const [history, setHistory] = useState([copy(questions[0/*Math.floor(Math.random()*questions.length)*/])]);
   const [index, setIndex] = useState(0);
   const [question, setQuestion] = useState(getQuestion());
   const [isVisible, onCycle] = useCycle(false, true);
@@ -48,7 +54,8 @@ export default function Quiz() {
   }
 
   function createNewQuestion(){
-    const qs = questions.questions;
+    const qs = questions;
+    console.log(qs);
     let qOriginal = qs[Math.floor(Math.random()*qs.length)];
     let qCopy = copy(qOriginal);
     setHistory(prevHistory => {
