@@ -5,7 +5,7 @@
   "proxy": "http://localhost:3001",
   "dependencies": {
     "@heroicons/react": "^2.0.13",
-    "@material-tailwind/react": "^1.2.5",
+    "@material-tailwind/react": "^1.4.2",
     "@tailwindcss/forms": "^0.5.3",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
